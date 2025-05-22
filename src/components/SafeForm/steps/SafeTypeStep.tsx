@@ -15,12 +15,36 @@ const SAFE_TYPES: SafeType[] = [
 ]
 
 export default function SafeTypeStep() {
-	const { state, updateSafeType, updateValuationCap, updateDiscount, updateStep } =
+	const { state, updateSafeType, updateValuationCap, updateDiscount, updateStep, updateProRataLetter } =
 		useSafeForm()
 
 	const handleContinue = () => {
-		if (state.safeType) {
+		if (isStepValid()) {
 			updateStep(3)
+		}
+	}
+
+	const isStepValid = () => {
+		if (!state.safeType) return false
+
+		// Check required fields based on SAFE type
+		switch (state.safeType) {
+			case 'Post-Money SAFE - Valuation Cap Only':
+				return !!state.valuationCap && state.proRataLetter !== 'none'
+			case 'Post-Money SAFE - Discount Only':
+				return !!state.discount && state.proRataLetter !== 'none'
+			case 'Post-Money SAFE - MFN (Most Favored Nation)':
+				return state.proRataLetter !== 'none'
+			case 'Pre-Money SAFE - Valuation Cap Only':
+				return !!state.valuationCap
+			case 'Pre-Money SAFE - Discount Only':
+				return !!state.discount
+			case 'Pre-Money SAFE - Valuation Cap and Discount':
+				return !!state.valuationCap && !!state.discount
+			case 'Pre-money SAFE - MFN (Most Favored Nation)':
+				return true // No required fields for this type
+			default:
+				return false
 		}
 	}
 
@@ -31,6 +55,8 @@ export default function SafeTypeStep() {
 	const showDiscount =
 		state.safeType?.includes('Discount') &&
 		!state.safeType?.includes('Valuation Cap Only')
+
+	const showProRata = state.safeType?.includes('Post-Money')
 
 	return (
 		<>
@@ -72,6 +98,7 @@ export default function SafeTypeStep() {
 						value={state.valuationCap || ''}
 						onChange={(e) => updateValuationCap(Number(e.target.value))}
 						placeholder="Enter valuation cap amount"
+						required
 					/>
 				</div>
 			)}
@@ -90,14 +117,35 @@ export default function SafeTypeStep() {
 						placeholder="Enter discount percentage"
 						min="0"
 						max="100"
+						required
 					/>
+				</div>
+			)}
+
+			{showProRata && (
+				<div className={styles.formGroup}>
+					<label htmlFor="proRataLetter" className={styles.label}>
+						Pro Rata Rights Letter
+					</label>
+					<select
+						id="proRataLetter"
+						className={styles.select}
+						value={state.proRataLetter || 'include'}
+						onChange={(e) => updateProRataLetter(e.target.value)}
+						required
+					>
+						<option value="include">Include Pro Rata Letter</option>
+						<option value="A">Letter A</option>
+						<option value="B">Letter B</option>
+						<option value="none">No Pro Rata Letter</option>
+					</select>
 				</div>
 			)}
 
 			<button
 				className={styles.button}
 				onClick={handleContinue}
-				disabled={!state.safeType}
+				disabled={!isStepValid()}
 			>
 				Continue
 			</button>
