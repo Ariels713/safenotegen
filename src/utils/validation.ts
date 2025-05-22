@@ -74,11 +74,11 @@ export const validateSafeTypeStep = (state: SafeFormState): boolean => {
 
 		switch (field.id) {
 			case 'valuation-cap-input':
-				return !!state.safeDetails.valuationCap
+				return !!state.valuationCap
 			case 'discount-input':
-				return !!state.safeDetails.discount
+				return !!state.discount
 			case 'pro-rata-select':
-				return !!state.safeDetails.proRata
+				return !!state.proRataLetter
 			default:
 				return false
 		}
