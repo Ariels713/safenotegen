@@ -142,13 +142,21 @@ export default function SafeTypeStep() {
 				</div>
 			)}
 
-			<button
-				className={styles.button}
-				onClick={handleContinue}
-				disabled={!isStepValid()}
-			>
-				Continue
-			</button>
+			<div className={styles.buttonGroup}>
+				<button
+					className={`${styles.button} ${styles.secondaryButton}`}
+					onClick={() => updateStep(1)}
+				>
+					Back
+				</button>
+				<button
+					className={styles.button}
+					onClick={handleContinue}
+					disabled={!isStepValid()}
+				>
+					Continue
+				</button>
+			</div>
 		</>
 	)
 } 

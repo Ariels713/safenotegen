@@ -4,7 +4,7 @@ import { useSafeForm } from '@/context/SafeFormContext'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
-	const { state } = useSafeForm()
+	const { state, updateStep } = useSafeForm()
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
@@ -142,9 +142,17 @@ export default function ReviewStep() {
 				)}
 			</div>
 
-			<button className={styles.button} onClick={() => {}}>
-				Generate Document
-			</button>
+			<div className={styles.buttonGroup}>
+				<button
+					className={`${styles.button} ${styles.secondaryButton}`}
+					onClick={() => updateStep(4)}
+				>
+					Back
+				</button>
+				<button className={styles.button}>
+					Submit
+				</button>
+			</div>
 		</>
 	)
 } 
