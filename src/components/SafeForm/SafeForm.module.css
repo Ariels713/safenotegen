@@ -1,0 +1,231 @@
+.label {
+	display: block;
+	font-size: 12px;
+	font-weight: 400;
+	margin-block-start: 0.25rem;
+	color: #393b3b;
+	margin-block-end: -0.5rem;
+}
+
+.labelHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+}
+
+/* Common focus styles for all interactive elements */
+.input:focus,
+.textarea:focus,
+.select:focus,
+.button:focus,
+.autofillInvoiceButton:focus,
+.addItemBtn:focus,
+.removeBtn:focus,
+.shippingButton:focus {
+	border-color: #00a688;
+	box-shadow: 0 0 0 2px rgba(0, 166, 136, 0.2);
+	outline: none;
+}
+
+/* Common active styles for buttons */
+.button:active,
+.autofillInvoiceButton:active,
+.addItemBtn:active,
+.removeBtn:active,
+.shippingButton:active {
+	background: #00a688;
+	color: white;
+}
+
+/* Base input styles */
+.input,
+.textarea,
+.select {
+	width: 100%;
+	font-size: 1rem;
+	background: #fff;
+	transition: all 0.2s ease;
+	color: #222;
+	padding: 14px 16px;
+	align-items: flex-start;
+	gap: 12px;
+	flex: 1 0 0;
+	align-self: stretch;
+	border-radius: 4px;
+	border: 1px solid var(--border-interactive-neutral-idle, rgba(0, 0, 0, 0.12));
+	background: var(--bg-interactive-neutral-idle, #fff);
+	max-height: 48px;
+}
+
+/* Base button styles */
+.button,
+.autofillInvoiceButton,
+.addItemBtn,
+.removeBtn,
+.shippingButton {
+	transition: all 0.2s ease;
+	border: 1px solid transparent;
+}
+
+/* Specific button styles */
+.button {
+	background: #07ebc0;
+	color: #151716;
+	padding: 0.6rem 1.5rem;
+	border-radius: 6px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	position: relative;
+	min-width: 160px;
+	white-space: nowrap;
+}
+
+.button:disabled {
+	background: #e0e0e0;
+	color: #666;
+	cursor: not-allowed;
+}
+
+/* Form specific styles */
+.formContainer {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.formStep {
+	display: none;
+}
+
+.formStep.active {
+	display: block;
+}
+
+.navigation {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 2rem;
+	padding: 1rem;
+	background: #f5f5f5;
+	border-radius: 8px;
+}
+
+.navItem {
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: all 0.2s ease;
+}
+
+.navItem.active {
+	background: #07ebc0;
+	color: #151716;
+}
+
+.navItem.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.checkboxContainer {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 1rem 0;
+}
+
+.checkbox {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.error {
+	color: #dc2626;
+	font-size: 0.875rem;
+	margin-top: 0.25rem;
+}
+
+.stepHeader {
+	margin-bottom: 1.5rem;
+}
+
+.stepDescription {
+	color: #666;
+	margin-bottom: 1rem;
+}
+
+/* Review section styles */
+.reviewSection {
+	margin-bottom: 2rem;
+	padding: 1.5rem;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.reviewSection h3 {
+	margin-bottom: 1rem;
+	color: #1a1a1a;
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+
+.reviewItem {
+	display: flex;
+	margin-bottom: 0.75rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.reviewItem:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
+.reviewItem .label {
+	margin: 0;
+	font-weight: 500;
+	min-width: 200px;
+}
+
+.reviewItem span:last-child {
+	color: #4b5563;
+}
+
+.textarea {
+	min-height: 100px;
+	resize: vertical;
+}
+
+.formGroup {
+	margin-bottom: 1.5rem;
+}
+
+.disclaimer {
+	margin: 2rem 0;
+	padding: 1.5rem;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.disclaimer h3 {
+	margin-bottom: 1rem;
+	color: #1a1a1a;
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+
+.disclaimer ul {
+	margin-top: 1rem;
+	padding-left: 1.5rem;
+}
+
+.disclaimer li {
+	margin-bottom: 0.5rem;
+	color: #4b5563;
+} 
