@@ -2,6 +2,7 @@
 
 import { useSafeForm } from '@/context/SafeFormContext'
 import styles from '../SafeForm.module.css'
+import React from 'react'
 
 const US_STATES = [
 	'Alabama',
@@ -58,6 +59,16 @@ const US_STATES = [
 
 export default function CompanyStep() {
 	const { state, updateCompanyInfo, updateStep } = useSafeForm()
+
+	// Initialize state values with defaults when component mounts
+	React.useEffect(() => {
+		if (!state.companyInfo.stateOfIncorporation) {
+			updateCompanyInfo({ stateOfIncorporation: 'Delaware' })
+		}
+		if (!state.companyInfo.stateOfGovernance) {
+			updateCompanyInfo({ stateOfGovernance: 'Delaware' })
+		}
+	}, [])
 
 	const handleContinue = () => {
 		const {

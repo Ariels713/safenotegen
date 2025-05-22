@@ -41,8 +41,8 @@ export default function SafeForm() {
 			case 3:
 				return !!(
 					state.companyInfo.legalName &&
-					state.companyInfo.stateOfIncorporation &&
-					state.companyInfo.stateOfGovernance &&
+					(state.companyInfo.stateOfIncorporation || 'Delaware') &&
+					(state.companyInfo.stateOfGovernance || 'Delaware') &&
 					state.companyInfo.companyAddress &&
 					state.companyInfo.authorizedSignatoryName &&
 					state.companyInfo.authorizedSignatoryTitle &&
