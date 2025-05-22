@@ -12,6 +12,40 @@ import ReviewStep from './steps/ReviewStep'
 export default function SafeForm() {
 	const { state, updateStep } = useSafeForm()
 
+	const isStepValid = (stepId: number) => {
+		switch (stepId) {
+			case 1:
+				return state.disclaimerAccepted
+			case 2:
+				return !!state.safeType
+			case 3:
+				return !!(
+					state.companyInfo.legalName &&
+					state.companyInfo.stateOfIncorporation &&
+					state.companyInfo.stateOfGovernance &&
+					state.companyInfo.companyAddress &&
+					state.companyInfo.authorizedSignatoryName &&
+					state.companyInfo.authorizedSignatoryTitle &&
+					state.companyInfo.authorizedSignatoryEmail
+				)
+			case 4:
+				return !!(
+					state.investorInfo.entityType &&
+					state.investorInfo.investorLegalName &&
+					state.investorInfo.investmentAmount &&
+					state.investorInfo.investDate &&
+					(state.investorInfo.entityType === 'Individual' ||
+						(state.investorInfo.authorizedSignatoryName &&
+							state.investorInfo.authorizedSignatoryTitle &&
+							state.investorInfo.authorizedSignatoryEmail))
+				)
+			case 5:
+				return true // Review step is always valid
+			default:
+				return false
+		}
+	}
+
 	const renderStep = () => {
 		switch (state.currentStep) {
 			case 1:
@@ -32,22 +66,32 @@ export default function SafeForm() {
 	return (
 		<div className={styles.formContainer}>
 			<nav className={styles.navigation}>
-				{FORM_STEPS.map((step) => (
-					<button
-						key={step.id}
-						className={`${styles.navItem} ${
-							state.currentStep === step.id ? styles.active : ''
-						} ${step.id > state.currentStep ? styles.disabled : ''}`}
-						onClick={() => {
-							if (step.id <= state.currentStep) {
-								updateStep(step.id)
-							}
-						}}
-						disabled={step.id > state.currentStep}
-					>
-						{step.title}
-					</button>
-				))}
+				{FORM_STEPS.map((step) => {
+					const isCurrentStep = state.currentStep === step.id
+					const isPreviousStep = step.id < state.currentStep
+					const isNextStep = step.id === state.currentStep + 1
+					const isEnabled =
+						isCurrentStep ||
+						isPreviousStep ||
+						(isNextStep && isStepValid(state.currentStep))
+
+					return (
+						<button
+							key={step.id}
+							className={`${styles.navItem} ${
+								isCurrentStep ? styles.active : ''
+							} ${!isEnabled ? styles.disabled : ''}`}
+							onClick={() => {
+								if (isEnabled) {
+									updateStep(step.id)
+								}
+							}}
+							disabled={!isEnabled}
+						>
+							{step.title}
+						</button>
+					)
+				})}
 			</nav>
 			<div className={`${styles.formStep} ${styles.active}`}>
 				{renderStep()}
