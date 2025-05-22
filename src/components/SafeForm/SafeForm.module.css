@@ -24,7 +24,8 @@
 .autofillInvoiceButton:focus,
 .addItemBtn:focus,
 .removeBtn:focus,
-.shippingButton:focus {
+.shippingButton:focus,
+.navItem:focus {
 	border-color: #00a688;
 	box-shadow: 0 0 0 2px rgba(0, 166, 136, 0.2);
 	outline: none;
@@ -35,7 +36,8 @@
 .autofillInvoiceButton:active,
 .addItemBtn:active,
 .removeBtn:active,
-.shippingButton:active {
+.shippingButton:active,
+.navItem:active {
 	background: #00a688;
 	color: white;
 }
@@ -65,7 +67,8 @@
 .autofillInvoiceButton,
 .addItemBtn,
 .removeBtn,
-.shippingButton {
+.shippingButton,
+.navItem {
 	transition: all 0.2s ease;
 	border: 1px solid transparent;
 }
@@ -115,15 +118,28 @@
 }
 
 .navItem {
-	padding: 0.5rem 1rem;
+	padding: 0.6rem 1.5rem;
 	cursor: pointer;
-	border-radius: 4px;
+	border-radius: 6px;
 	transition: all 0.2s ease;
+	font-size: 1rem;
+	font-weight: 600;
+	background: #e0e0e0;
+	color: #666;
+	min-width: 120px;
+	text-align: center;
 }
 
-.navItem.active {
+.navItem.active,
+.navItem.validated,
+.navItem.nextEnabled {
 	background: #07ebc0;
 	color: #151716;
+}
+
+.navItem:not(.disabled):hover {
+	background: #00a688;
+	color: white;
 }
 
 .navItem.disabled {

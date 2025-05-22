@@ -74,12 +74,16 @@ export default function SafeForm() {
 						isCurrentStep ||
 						isPreviousStep ||
 						(isNextStep && isStepValid(state.currentStep))
+					const isValidated = isStepValid(step.id)
+					const isNextEnabled = isNextStep && isStepValid(state.currentStep)
 
 					return (
 						<button
 							key={step.id}
 							className={`${styles.navItem} ${
 								isCurrentStep ? styles.active : ''
+							} ${isValidated ? styles.validated : ''} ${
+								isNextEnabled ? styles.nextEnabled : ''
 							} ${!isEnabled ? styles.disabled : ''}`}
 							onClick={() => {
 								if (isEnabled) {
