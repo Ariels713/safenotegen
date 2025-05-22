@@ -37,7 +37,7 @@ export interface SafeFormState {
 	safeType: SafeType | null
 	valuationCap?: number
 	discount?: number
-	proRataLetter?: string
+	includeProRataLetter?: boolean
 	companyInfo: Partial<CompanyInfo>
 	investorInfo: Partial<InvestorInfo>
 }
