@@ -2,6 +2,7 @@
 
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName } from '@/utils/documentUtils'
+import { generateSafeDocument, generateProRataDocument, downloadDocument } from '@/utils/documentGenerator'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
@@ -23,14 +24,16 @@ export default function ReviewStep() {
 		})
 	}
 
-	const handleDownloadSafe = () => {
-		// TODO: Implement SAFE document generation
-		console.log('Downloading SAFE:', getSafeDocumentName(state))
+	const handleDownloadSafe = async () => {
+		const doc = generateSafeDocument(state)
+		const filename = getSafeDocumentName(state)
+		await downloadDocument(doc, filename)
 	}
 
-	const handleDownloadProRata = () => {
-		// TODO: Implement Pro Rata letter generation
-		console.log('Downloading Pro Rata:', getProRataDocumentName(state))
+	const handleDownloadProRata = async () => {
+		const doc = generateProRataDocument(state)
+		const filename = getProRataDocumentName(state)
+		await downloadDocument(doc, filename)
 	}
 
 	return (
