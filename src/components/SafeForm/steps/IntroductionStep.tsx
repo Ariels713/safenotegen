@@ -220,7 +220,7 @@ export default function IntroductionStep() {
             className={styles.checkbox}
           />
           <label htmlFor="disclaimer">
-            I have read and agree to the terms of the disclaimer
+            I have read and acknowledge the disclaimer
           </label>
         </div>
         <button
