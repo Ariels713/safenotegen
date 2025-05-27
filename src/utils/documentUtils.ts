@@ -7,7 +7,7 @@ interface DownloadOptions {
 
 export const getDownloadOptions = (state: SafeFormState): DownloadOptions => {
 	const isPostMoney = Boolean(state.safeType?.includes('Post-Money'))
-	const hasProRataLetter = Boolean(state.includeProRataLetter)
+	const hasProRataLetter = state.proRataLetter === 'yes'
 
 	return {
 		showSafeDownload: true, // Always show SAFE download
@@ -28,7 +28,7 @@ export const getSafeDocumentName = (state: SafeFormState): string => {
 }
 
 export const getProRataDocumentName = (state: SafeFormState): string => {
-	if (!state.includeProRataLetter) return ''
+	if (state.proRataLetter !== 'yes') return ''
 
 	const companyName = state.companyInfo.legalName || 'Company'
 	const investorName = state.investorInfo.investorLegalName || 'Investor'

@@ -41,14 +41,14 @@ export default function IntroductionStep() {
           </a>
           , respectively), which are incorporated by reference to these terms,
           the following terms apply to your use of this Rho SAFE document
-          generation service (the "Service") and your agreement to these terms
+          generation service (the &ldquo;Service&rdquo;) and your agreement to these terms
           is required before you are permitted to use the Service.
         </p>
 
         <p>
-          These documents (the "Rho SAFE Docs") by Under Technologies Inc., dba
+          These documents (the &ldquo;Rho SAFE Docs&rdquo;) by Under Technologies Inc., dba
           Rho Technologies, and together with its affiliates (collectively,
-          "Rho") are provided for your reference only. These terms and the
+          &ldquo;Rho&rdquo;) are provided for your reference only. These terms and the
           operations or availability of this Service may be changed by Rho, with
           or without notice, at our sole discretion.
         </p>
@@ -157,7 +157,7 @@ export default function IntroductionStep() {
           </li>
         </ol>
         <p>
-          RHO PROVIDES THESE TERMS ON AN "AS IS" BASIS, AND SPECIFICALLY
+          RHO PROVIDES THESE TERMS ON AN &ldquo;AS IS&rdquo; BASIS, AND SPECIFICALLY
           DISCLAIM ALL WARRANTIES, TERMS, REPRESENTATIONS AND CONDITIONS WHETHER
           EXPRESS, IMPLIED, OR STATUTORY, AND INCLUDING ANY WARRANTIES, TERMS,
           REPRESENTATIONS AND CONDITIONS OF MERCHANTABILITY, SATISFACTORY
@@ -189,15 +189,15 @@ export default function IntroductionStep() {
         <p>
           This document is based on the set of financing documents (referred to
           as SAFE, or Simple Agreement for Future Equity) developed by Y
-          Combinator ("YC"). YC includes the following disclaimer to accompany
-          the documents: "Needless to say, YC does not assume responsibility for
+          Combinator (&ldquo;YC&rdquo;). YC includes the following disclaimer to accompany
+          the documents: &ldquo;Needless to say, YC does not assume responsibility for
           the consequence of using any version of the safe or any other document
-          found on our website."
+          found on our website.&rdquo;
         </p>
 
         <p>
           Under Technologies Inc., dba Rho Technologies, and together with its
-          affiliates (collectively, "Rho") also do not assume any responsibility
+          affiliates (collectively, &ldquo;Rho&rdquo;) also do not assume any responsibility
           for any consequence of your use of this document. Rho and this Service
           have no official relationship with YC. Rho does not endorse or
           recommend the use of these default values or the documents themselves.

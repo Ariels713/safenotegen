@@ -130,12 +130,12 @@ export default function SafeTypeStep() {
 					<select
 						id="proRataLetter"
 						className={styles.select}
-						value={state.includeProRataLetter ? 'include' : 'exclude'}
+						value={state.proRataLetter ? 'include' : 'exclude'}
 						onChange={(e) => updateProRataLetter(e.target.value === 'include')}
 						required
 					>
 						<option value="include">Include Pro Rata Letter</option>
-						<option value="exclude">Don't Include Pro Rata Letter</option>
+						<option value="exclude">Don&apos;t Include Pro Rata Letter</option>
 					</select>
 				</div>
 			)}

@@ -60,7 +60,7 @@ export default function ReviewStep() {
 						<span>{state.discount}%</span>
 					</div>
 				)}
-				{state.includeProRataLetter && (
+				{state.proRataLetter && (
 					<div className={styles.reviewItem}>
 						<span className={styles.label}>Pro Rata Letter:</span>
 						<span>Included</span>

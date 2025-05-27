@@ -19,8 +19,9 @@ const initialState: SafeFormState = {
 	currentStep: 1,
 	disclaimerAccepted: false,
 	safeType: null,
+	proRataLetter: 'yes',
 	companyInfo: {},
-	investorInfo: {}
+	investorInfo: {},
 }
 
 type Action =
@@ -48,7 +49,7 @@ function safeFormReducer(state: SafeFormState, action: Action): SafeFormState {
 		case 'UPDATE_DISCOUNT':
 			return { ...state, discount: action.payload }
 		case 'UPDATE_PRO_RATA_LETTER':
-			return { ...state, includeProRataLetter: action.payload }
+			return { ...state, proRataLetter: action.payload ? 'yes' : 'none' }
 		case 'UPDATE_COMPANY_INFO':
 			return {
 				...state,
