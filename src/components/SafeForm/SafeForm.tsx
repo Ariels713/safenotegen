@@ -8,9 +8,28 @@ import SafeTypeStep from './steps/SafeTypeStep'
 import CompanyStep from './steps/CompanyStep'
 import InvestorStep from './steps/InvestorStep'
 import ReviewStep from './steps/ReviewStep'
+import { useEffect, useRef } from 'react'
 
 export default function SafeForm() {
 	const { state, updateStep } = useSafeForm()
+	const navRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const scrollToCurrentStep = () => {
+			if (navRef.current) {
+				const activeButton = navRef.current.querySelector(`.${styles.active}`)
+				if (activeButton) {
+					activeButton.scrollIntoView({
+						behavior: 'smooth',
+						block: 'nearest',
+						inline: 'center'
+					})
+				}
+			}
+		}
+
+		scrollToCurrentStep()
+	}, [state.currentStep])
 
 	const isStepValid = (stepId: number) => {
 		switch (stepId) {
@@ -85,7 +104,7 @@ export default function SafeForm() {
 
 	return (
 		<div className={styles.formContainer}>
-			<nav className={styles.navigation}>
+			<nav ref={navRef} className={styles.navigation}>
 				{FORM_STEPS.map((step) => {
 					const isCurrentStep = state.currentStep === step.id
 					const isPreviousStep = step.id < state.currentStep

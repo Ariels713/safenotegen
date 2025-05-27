@@ -97,6 +97,8 @@
 	max-width: 800px;
 	margin: 0 auto;
 	padding: 2rem;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
 }
 
 .formStep {
@@ -111,21 +113,30 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 2rem;
-	padding: 1rem;
-	background: #f5f5f5;
-	border-radius: 8px;
+	gap: 1rem;
+	flex-wrap: wrap;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+}
+
+.navigation::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
 }
 
 .navItem {
+	scroll-snap-align: center;
+	flex: 1;
 	padding: 0.6rem 1.5rem;
 	cursor: pointer;
 	border-radius: 6px;
 	transition: all 0.2s ease;
-	font-size: 1rem;
+	font-size: 12px;
 	font-weight: 600;
 	background: #e0e0e0;
 	color: #666;
-	min-width: 120px;
 	text-align: center;
 }
 
@@ -149,8 +160,14 @@
 .checkboxContainer {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 0.5rem;
 	margin: 1rem 0;
+
+	& > div:first-child {
+		display: flex; 
+		gap: 0.5rem;
+	}
 }
 
 .checkbox {
@@ -176,8 +193,8 @@
 	content: '';
 	position: absolute;
 	left: 4px;
-	top: 1px;
-	width: 6px;
+	top: 0px;
+	width: 4px;
 	height: 10px;
 	border: solid #151716;
 	border-width: 0 2px 2px 0;
@@ -201,11 +218,14 @@
 
 .stepHeader {
 	margin-bottom: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .stepDescription {
 	color: #666;
-	margin-bottom: 1rem;
+	font-size: 12px;
 }
 
 /* Review section styles */
@@ -262,8 +282,19 @@
 .disclaimer {
 	margin: 2rem 0;
 	padding: 1.5rem;
-	background: #f8f9fa;
+	background: #f4f8f6;
 	border-radius: 8px;
+	overflow: hidden;
+	overflow-y: auto;
+	max-height: 200px;
+
+	& p:not(:last-child):not(:has(+ p)) {
+		margin-bottom: 1rem; 
+	}
+
+	& p + p {
+		margin-top: 1rem;
+	}	
 }
 
 .disclaimer h3 {
@@ -315,5 +346,16 @@
 	.formRow {
 		flex-direction: column;
 		gap: 0;
+	}
+	
+	.navigation {
+		flex-wrap: nowrap;
+		padding: 1rem 0;
+		margin: 0 -1rem;
+	}
+	
+	.navItem {
+		flex: 0 0 auto;
+		white-space: nowrap;
 	}
 } 
