@@ -83,6 +83,8 @@
 	background-color: #07ebc0;
 	color: #151716;
 	border: none;
+	font-size: 12px;
+	font-weight: 600;
 }
 
 .button:disabled {
@@ -232,7 +234,7 @@
 .reviewSection {
 	margin-bottom: 2rem;
 	padding: 1.5rem;
-	background: #f8f9fa;
+	background: #f4f8f6;
 	border-radius: 8px;
 }
 
@@ -264,9 +266,7 @@
 	min-width: 200px;
 }
 
-.reviewItem span:last-child {
-	color: #4b5563;
-}
+
 
 .textarea {
 	min-height: 100px;
@@ -327,6 +327,8 @@
 	background-color: transparent;
 	border: 1px solid #e0e0e0;
 	color: #333;
+	font-size: 12px;
+	font-weight: 600;
 }
 
 .secondaryButton:hover {
