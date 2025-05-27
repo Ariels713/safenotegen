@@ -145,8 +145,8 @@
 .navItem.active,
 .navItem.validated,
 .navItem.nextEnabled {
-	background: #05a588;
-	color: #fff;
+	background: #07ebc0;
+	color: #151716;
 }
 
 .navItem:not(.disabled):hover {
@@ -296,24 +296,33 @@
 
 	& p + p {
 		margin-top: 1rem;
-	}	
+	}
+
+	& p {
+		font-size: 12px;
+	}
 }
 
 .disclaimer h3 {
 	margin-bottom: 1rem;
 	color: #1a1a1a;
-	font-size: 1.25rem;
+	font-size: 1rem;
 	font-weight: 600;
 }
 
 .disclaimer ul {
 	margin-top: 1rem;
-	padding-left: 1.5rem;
+	padding-left: 1rem;
+	font-size: 12px;
+	list-style-type: none;
+	margin-left: 1rem;
 }
 
 .disclaimer li {
+	list-style-type: none;
 	margin-bottom: 0.5rem;
 	color: #4b5563;
+	font-size: 12px;
 }
 
 .buttonGroup {
@@ -359,7 +368,6 @@
 	.navigation {
 		flex-wrap: nowrap;
 		padding: 1rem 0;
-		/* margin: 0 -1rem; */
 		margin-bottom: .5rem;
 	}
 	

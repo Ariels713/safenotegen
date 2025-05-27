@@ -24,7 +24,7 @@ export default function IntroductionStep() {
 
       <div className={styles.disclaimer}>
         <h3>Disclaimer</h3>
-        <ol style={{ marginLeft: "2rem" }}>
+        <ol style={{ marginLeft: "1rem" }}>
           <li>
             <strong>Generally</strong>
           </li>
@@ -59,13 +59,13 @@ export default function IntroductionStep() {
           blank or unfilled fields in the documents that require your attention.
         </p>
 
-        <ol style={{ marginLeft: "2rem" }} start={2}>
+        <ol style={{ marginLeft: "1rem" }} start={2}>
           <li>
             <strong>Purposes of Rho SAFE Docs</strong>
           </li>
         </ol>
 
-        <ul style={{ marginLeft: "2rem", listStyleType: "none" }}>
+        <ul>
           <li>
             <strong>
               <span>a.{' '}</span>Legal
@@ -82,7 +82,7 @@ export default function IntroductionStep() {
           relying on the Rho SAFE Docs.
         </p>
 
-        <ul style={{ marginLeft: "2rem", listStyleType: "none" }}>
+        <ul>
           <li>
             <strong>
               <span>b.{' '}</span>Tax
@@ -98,7 +98,7 @@ export default function IntroductionStep() {
           or recommending to another party any transaction or matter.
         </p>
 
-        <ul style={{ marginLeft: "2rem", listStyleType: "none" }}>
+        <ul>
           <li>
             <strong>
               <span>c.{' '}</span>Investment
@@ -116,7 +116,7 @@ export default function IntroductionStep() {
           businesses.
         </p>
 
-        <ul style={{ marginLeft: "2rem", listStyleType: "none" }}>
+        <ul>
           <li>
             <strong>
               <span>d.{' '}</span>Other
@@ -138,7 +138,7 @@ export default function IntroductionStep() {
           than minimal.
         </p>
 
-        <ol style={{ marginLeft: "2rem" }} start={3}>
+        <ol style={{ marginLeft: "1rem" }} start={3}>
           <li>
             <strong>No Professional or Special Relationships</strong>
           </li>
@@ -151,7 +151,7 @@ export default function IntroductionStep() {
           by Rho.
         </p>
 
-        <ol style={{ marginLeft: "2rem" }} start={4}>
+        <ol style={{ marginLeft: "1rem" }} start={4}>
           <li>
             <strong>Disclaimer of Warranties</strong>
           </li>
@@ -166,7 +166,7 @@ export default function IntroductionStep() {
           WE CANNOT GUARANTEE IT.
         </p>
 
-        <ol style={{ marginLeft: "2rem" }} start={5}>
+        <ol style={{ marginLeft: "1rem" }} start={5}>
           <li>
             <strong>Authority</strong>
           </li>
@@ -183,7 +183,7 @@ export default function IntroductionStep() {
           security of any data you provide.
         </p>
 
-        <p style={{ textDecoration: "underline", paddingBlockStart: "2rem", paddingBlockEnd: "1rem" }}>
+        <p style={{ textDecoration: "underline", paddingBlockStart: "1rem", paddingBlockEnd: "1rem" }}>
           <strong>SAFE-Specific Disclaimer</strong>
         </p>
         <p>
