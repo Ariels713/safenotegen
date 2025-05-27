@@ -37,7 +37,7 @@ export interface SafeFormState {
 	safeType: SafeType | null
 	valuationCap?: number
 	discount?: number
-	proRataLetter?: string
+	proRataLetter: string
 	companyInfo: Partial<CompanyInfo>
 	investorInfo: Partial<InvestorInfo>
 }
@@ -58,7 +58,7 @@ export const FORM_STEPS: FormStep[] = [
 	},
 	{
 		id: 2,
-		title: 'Safe Type',
+		title: 'SAFE Type',
 		description: 'Select the type of SAFE agreement',
 		isValid: false
 	},

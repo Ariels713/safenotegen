@@ -30,11 +30,11 @@ export default function SafeTypeStep() {
 		// Check required fields based on SAFE type
 		switch (state.safeType) {
 			case 'Post-Money SAFE - Valuation Cap Only':
-				return !!state.valuationCap && state.proRataLetter !== 'none'
+				return !!state.valuationCap
 			case 'Post-Money SAFE - Discount Only':
-				return !!state.discount && state.proRataLetter !== 'none'
+				return !!state.discount
 			case 'Post-Money SAFE - MFN (Most Favored Nation)':
-				return state.proRataLetter !== 'none'
+				return true
 			case 'Pre-Money SAFE - Valuation Cap Only':
 				return !!state.valuationCap
 			case 'Pre-Money SAFE - Discount Only':
@@ -130,14 +130,12 @@ export default function SafeTypeStep() {
 					<select
 						id="proRataLetter"
 						className={styles.select}
-						value={state.proRataLetter || 'include'}
-						onChange={(e) => updateProRataLetter(e.target.value)}
+						value={state.proRataLetter ? 'include' : 'exclude'}
+						onChange={(e) => updateProRataLetter(e.target.value === 'include')}
 						required
 					>
 						<option value="include">Include Pro Rata Letter</option>
-						<option value="A">Letter A</option>
-						<option value="B">Letter B</option>
-						<option value="none">No Pro Rata Letter</option>
+						<option value="exclude">Don&apos;t Include Pro Rata Letter</option>
 					</select>
 				</div>
 			)}

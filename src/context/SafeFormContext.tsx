@@ -10,7 +10,7 @@ interface SafeFormContextType {
 	updateSafeType: (type: SafeType) => void
 	updateValuationCap: (amount: number) => void
 	updateDiscount: (amount: number) => void
-	updateProRataLetter: (letter: string) => void
+	updateProRataLetter: (include: boolean) => void
 	updateCompanyInfo: (info: Partial<CompanyInfo>) => void
 	updateInvestorInfo: (info: Partial<InvestorInfo>) => void
 }
@@ -19,8 +19,9 @@ const initialState: SafeFormState = {
 	currentStep: 1,
 	disclaimerAccepted: false,
 	safeType: null,
+	proRataLetter: 'yes',
 	companyInfo: {},
-	investorInfo: {}
+	investorInfo: {},
 }
 
 type Action =
@@ -29,7 +30,7 @@ type Action =
 	| { type: 'UPDATE_SAFE_TYPE'; payload: SafeType }
 	| { type: 'UPDATE_VALUATION_CAP'; payload: number }
 	| { type: 'UPDATE_DISCOUNT'; payload: number }
-	| { type: 'UPDATE_PRO_RATA_LETTER'; payload: string }
+	| { type: 'UPDATE_PRO_RATA_LETTER'; payload: boolean }
 	| { type: 'UPDATE_COMPANY_INFO'; payload: Partial<CompanyInfo> }
 	| { type: 'UPDATE_INVESTOR_INFO'; payload: Partial<InvestorInfo> }
 
@@ -48,7 +49,7 @@ function safeFormReducer(state: SafeFormState, action: Action): SafeFormState {
 		case 'UPDATE_DISCOUNT':
 			return { ...state, discount: action.payload }
 		case 'UPDATE_PRO_RATA_LETTER':
-			return { ...state, proRataLetter: action.payload }
+			return { ...state, proRataLetter: action.payload ? 'yes' : 'none' }
 		case 'UPDATE_COMPANY_INFO':
 			return {
 				...state,
@@ -87,8 +88,8 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 		dispatch({ type: 'UPDATE_DISCOUNT', payload: amount })
 	}
 
-	const updateProRataLetter = (letter: string) => {
-		dispatch({ type: 'UPDATE_PRO_RATA_LETTER', payload: letter })
+	const updateProRataLetter = (include: boolean) => {
+		dispatch({ type: 'UPDATE_PRO_RATA_LETTER', payload: include })
 	}
 
 	const updateCompanyInfo = (info: Partial<CompanyInfo>) => {

@@ -68,7 +68,7 @@ export default function CompanyStep() {
     if (!state.companyInfo.stateOfGovernance) {
       updateCompanyInfo({ stateOfGovernance: "Delaware" });
     }
-  }, []);
+  }, [state.companyInfo.stateOfIncorporation, state.companyInfo.stateOfGovernance, updateCompanyInfo]);
 
   const handleContinue = () => {
     const {

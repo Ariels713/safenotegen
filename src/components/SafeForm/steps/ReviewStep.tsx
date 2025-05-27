@@ -1,10 +1,12 @@
 'use client'
 
 import { useSafeForm } from '@/context/SafeFormContext'
+import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName } from '@/utils/documentUtils'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
 	const { state, updateStep } = useSafeForm()
+	const downloadOptions = getDownloadOptions(state)
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
@@ -19,6 +21,16 @@ export default function ReviewStep() {
 			month: 'long',
 			day: 'numeric'
 		})
+	}
+
+	const handleDownloadSafe = () => {
+		// TODO: Implement SAFE document generation
+		console.log('Downloading SAFE:', getSafeDocumentName(state))
+	}
+
+	const handleDownloadProRata = () => {
+		// TODO: Implement Pro Rata letter generation
+		console.log('Downloading Pro Rata:', getProRataDocumentName(state))
 	}
 
 	return (
@@ -46,6 +58,12 @@ export default function ReviewStep() {
 					<div className={styles.reviewItem}>
 						<span className={styles.label}>Discount:</span>
 						<span>{state.discount}%</span>
+					</div>
+				)}
+				{state.proRataLetter && (
+					<div className={styles.reviewItem}>
+						<span className={styles.label}>Pro Rata Letter:</span>
+						<span>Included</span>
 					</div>
 				)}
 			</div>
@@ -149,9 +167,22 @@ export default function ReviewStep() {
 				>
 					Back
 				</button>
-				<button className={styles.button}>
-					Submit
-				</button>
+				{downloadOptions.showSafeDownload && (
+					<button
+						className={styles.button}
+						onClick={handleDownloadSafe}
+					>
+						Download SAFE
+					</button>
+				)}
+				{downloadOptions.showProRataDownload && (
+					<button
+						className={styles.button}
+						onClick={handleDownloadProRata}
+					>
+						Download Pro Rata Letter
+					</button>
+				)}
 			</div>
 		</>
 	)

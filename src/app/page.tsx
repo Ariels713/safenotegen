@@ -5,7 +5,7 @@ import SafeForm from '@/components/SafeForm/SafeForm'
 
 export default function Home() {
 	return (
-		<main className="min-h-screen p-8">
+		<main>
 			<SafeFormProvider>
 				<SafeForm />
 			</SafeFormProvider>
