@@ -1,4 +1,4 @@
-import { Paragraph, HeadingLevel, AlignmentType, TextRun } from 'docx'
+import { Paragraph, HeadingLevel, AlignmentType } from 'docx'
 import { SafeFormState, SafeType } from '@/types/safeForm'
 
 interface DocumentTemplate {
@@ -485,6 +485,99 @@ In connection with Section (b)(i), the Purchase Amount will be due and payable b
 
 (f) All rights and obligations hereunder will be governed by the laws of the State of [stateGovernance], without regard to the conflicts of law provisions of such jurisdiction.`
 			}
+		],
+		signature: {
+			company: {
+				title: 'COMPANY:',
+				fields: [
+					'[companyName]',
+					'By:_____________________________________________',
+					'[signatoryName]',
+					'[signatoryTitle]',
+					'Address: [companyAddress]',
+					'Email: [signatoryEmail]'
+				]
+			},
+			investor: {
+				title: 'INVESTOR:',
+				fields: [
+					'By:_____________________________________________',
+					'Name: [investorName]',
+					'Title: [entitySignatoryTitle]',
+					'Address: [investorAddress]',
+					'Email: [entitySignatoryEmail]'
+				]
+			}
+		}
+	},
+	'Pre-Money SAFE - Discount Only': {
+		title: 'PRE-MONEY SAFE (DISCOUNT)',
+		disclaimer: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES. THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+		header: 'THIS CERTIFIES THAT in exchange for the payment by [investorName] (the "Investor") of [investmentAmount] (the "Purchase Amount") on or about [dateOfSafe], [companyName], a [stateIncorporation] corporation (the "Company"), hereby issues to the Investor the right to certain shares of the Company\'s capital stock, subject to the terms set forth below.',
+		sections: [
+			// ... sections similar to other templates but with discount-specific content ...
+		],
+		signature: {
+			company: {
+				title: 'COMPANY:',
+				fields: [
+					'[companyName]',
+					'By:_____________________________________________',
+					'[signatoryName]',
+					'[signatoryTitle]',
+					'Address: [companyAddress]',
+					'Email: [signatoryEmail]'
+				]
+			},
+			investor: {
+				title: 'INVESTOR:',
+				fields: [
+					'By:_____________________________________________',
+					'Name: [investorName]',
+					'Title: [entitySignatoryTitle]',
+					'Address: [investorAddress]',
+					'Email: [entitySignatoryEmail]'
+				]
+			}
+		}
+	},
+	'Pre-Money SAFE - Valuation Cap and Discount': {
+		title: 'PRE-MONEY SAFE (VALUATION CAP AND DISCOUNT)',
+		disclaimer: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES. THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+		header: 'THIS CERTIFIES THAT in exchange for the payment by [investorName] (the "Investor") of [investmentAmount] (the "Purchase Amount") on or about [dateOfSafe], [companyName], a [stateIncorporation] corporation (the "Company"), hereby issues to the Investor the right to certain shares of the Company\'s capital stock, subject to the terms set forth below.',
+		sections: [
+			// ... sections similar to other templates but with both valuation cap and discount content ...
+		],
+		signature: {
+			company: {
+				title: 'COMPANY:',
+				fields: [
+					'[companyName]',
+					'By:_____________________________________________',
+					'[signatoryName]',
+					'[signatoryTitle]',
+					'Address: [companyAddress]',
+					'Email: [signatoryEmail]'
+				]
+			},
+			investor: {
+				title: 'INVESTOR:',
+				fields: [
+					'By:_____________________________________________',
+					'Name: [investorName]',
+					'Title: [entitySignatoryTitle]',
+					'Address: [investorAddress]',
+					'Email: [entitySignatoryEmail]'
+				]
+			}
+		}
+	},
+	'Pre-money SAFE - MFN (Most Favored Nation)': {
+		title: 'PRE-MONEY SAFE (MFN)',
+		disclaimer: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES. THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+		header: 'THIS CERTIFIES THAT in exchange for the payment by [investorName] (the "Investor") of [investmentAmount] (the "Purchase Amount") on or about [dateOfSafe], [companyName], a [stateIncorporation] corporation (the "Company"), hereby issues to the Investor the right to certain shares of the Company\'s capital stock, subject to the terms set forth below.',
+		sections: [
+			// ... sections similar to other templates but with MFN-specific content ...
 		],
 		signature: {
 			company: {
