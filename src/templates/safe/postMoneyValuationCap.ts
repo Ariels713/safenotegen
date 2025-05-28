@@ -3,6 +3,10 @@ import { DocumentTemplate } from './types'
 export const postMoneyValuationCapTemplate: DocumentTemplate = {
 	title: 'POST-MONEY SAFE (VALUATION CAP)',
 	disclaimer: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES. THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED IN THIS SAFE AND UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+	companyName: '[companyName]',
+	subtitle: 'SAFE\n(Simple Agreement for Future Equity)',
+	ycombinatorNote: 'This Safe is one of the forms available at http://ycombinator.com/documents and the Company and the Investor agree that neither one has modified the form, except to fill in blanks and bracketed terms.',
+	valuationCapNote: 'The "Post-Money Valuation Cap" is $[valuationCap]. See Section 2 for certain additional defined terms.',
 	header: 'THIS CERTIFIES THAT in exchange for the payment by [investorName] (the "Investor") of [investmentAmount] (the "Purchase Amount") on or about [dateOfSafe], [companyName], a [stateIncorporation] corporation (the "Company"), issues to the Investor the right to certain shares of the Company\'s Capital Stock, subject to the terms described below.',
 	sections: [
 		{
@@ -121,6 +125,7 @@ Excludes the Unissued Option Pool.
 		}
 	],
 	signature: {
+		witness: 'IN WITNESS WHEREOF, the undersigned have caused this Safe to be duly executed and delivered.',
 		company: {
 			title: 'COMPANY:',
 			fields: [

@@ -86,12 +86,22 @@ export async function generateProRataDocument(formData: SafeFormData): Promise<B
 
 function getTemplate(safeType: string) {
 	switch (safeType) {
-		case 'Post-Money SAFE - Valuation Cap Only':
+		case 'postMoneyValuationCap':
 			return postMoneyValuationCapTemplate
-		case 'Post-Money SAFE - Discount Only':
+		case 'postMoneyDiscount':
 			return postMoneyDiscountTemplate
-		case 'Post-Money SAFE - Valuation Cap and Discount':
+		case 'postMoneyMfn':
+			return postMoneyValuationCapTemplate // Use same template as valuation cap
+		case 'preMoneyValuationCap':
+			return postMoneyValuationCapTemplate // Use same template as post-money
+		case 'preMoneyDiscount':
+			return postMoneyDiscountTemplate // Use same template as post-money
+		case 'preMoneyValuationCapAndDiscount':
 			return postMoneyValuationCapAndDiscountTemplate
+		case 'preMoneyMfn':
+			return postMoneyValuationCapTemplate // Use same template as valuation cap
+		case 'proRata':
+			return proRataRightsTemplate
 		default:
 			throw new Error(`Invalid SAFE type: ${safeType}`)
 	}

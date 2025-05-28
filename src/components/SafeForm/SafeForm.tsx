@@ -40,19 +40,19 @@ export default function SafeForm() {
 
 				// Check required fields based on SAFE type
 				switch (state.safeType) {
-					case 'Post-Money SAFE - Valuation Cap Only':
+					case 'postMoneyValuationCap':
 						return !!state.valuationCap && state.proRataLetter !== 'none'
-					case 'Post-Money SAFE - Discount Only':
+					case 'postMoneyDiscount':
 						return !!state.discount && state.proRataLetter !== 'none'
-					case 'Post-Money SAFE - MFN (Most Favored Nation)':
+					case 'postMoneyMfn':
 						return state.proRataLetter !== 'none'
-					case 'Pre-Money SAFE - Valuation Cap Only':
+					case 'preMoneyValuationCap':
 						return !!state.valuationCap
-					case 'Pre-Money SAFE - Discount Only':
+					case 'preMoneyDiscount':
 						return !!state.discount
-					case 'Pre-Money SAFE - Valuation Cap and Discount':
+					case 'preMoneyValuationCapAndDiscount':
 						return !!state.valuationCap && !!state.discount
-					case 'Pre-money SAFE - MFN (Most Favored Nation)':
+					case 'preMoneyMfn':
 						return true // No required fields for this type
 					default:
 						return false

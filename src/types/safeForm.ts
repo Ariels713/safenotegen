@@ -1,11 +1,12 @@
 export type SafeType = 
-	| 'Post-Money SAFE - Valuation Cap Only'
-	| 'Post-Money SAFE - Discount Only'
-	| 'Post-Money SAFE - MFN (Most Favored Nation)'
-	| 'Pre-Money SAFE - Valuation Cap Only'
-	| 'Pre-Money SAFE - Discount Only'
-	| 'Pre-Money SAFE - Valuation Cap and Discount'
-	| 'Pre-money SAFE - MFN (Most Favored Nation)'
+	| 'postMoneyValuationCap'
+	| 'postMoneyDiscount'
+	| 'postMoneyMfn'
+	| 'preMoneyValuationCap'
+	| 'preMoneyDiscount'
+	| 'preMoneyValuationCapAndDiscount'
+	| 'preMoneyMfn'
+	| 'proRata'
 
 export type EntityType = 'Individual' | 'LLC' | 'Corporation'
 
