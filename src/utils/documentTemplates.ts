@@ -1,4 +1,4 @@
-import { Paragraph, HeadingLevel, AlignmentType } from 'docx'
+import { Paragraph, HeadingLevel, AlignmentType, TextRun } from 'docx'
 import { SafeFormState, SafeType } from '@/types/safeForm'
 
 interface DocumentTemplate {
@@ -659,31 +659,151 @@ export const getProRataTemplate = (): DocumentTemplate => {
 export const createDocumentParagraphs = (template: DocumentTemplate, state: SafeFormState): Paragraph[] => {
 	const paragraphs: Paragraph[] = [
 		new Paragraph({
-			text: template.disclaimer,
-			spacing: { after: 200 }
-		}),
-		new Paragraph({
-			text: state.companyInfo.legalName || '',
-			spacing: { after: 200 }
-		}),
-		new Paragraph({
-			text: template.title,
+			children: [
+				new TextRun({
+					text: template.title,
+					color: '000000',
+					bold: true,
+					size: 22 // 11pt * 2 (docx uses half-points)
+				})
+			],
 			heading: HeadingLevel.HEADING_1,
 			alignment: AlignmentType.CENTER,
 			spacing: { after: 200 }
 		}),
 		new Paragraph({
-			text: '(Simple Agreement for Future Equity)',
+			children: [
+				new TextRun({
+					text: template.disclaimer.split('"SECURITIES ACT')[0],
+					size: 20
+				}),
+				new TextRun({
+					text: '"SECURITIES ACT',
+					bold: true,
+					size: 20
+				}),
+				new TextRun({
+					text: template.disclaimer.split('"SECURITIES ACT')[1],
+					size: 20
+				})
+			],
+			alignment: AlignmentType.JUSTIFIED,
+			spacing: { after: 200 }
+		}),
+		new Paragraph({
+			children: [
+				new TextRun({
+					text: state.companyInfo.legalName || '',
+					bold: true,
+					size: 22 // 11pt * 2 (docx uses half-points)
+				})
+			],
+			spacing: { after: 200 }
+		}),
+		new Paragraph({
+			children: [
+				new TextRun({
+					text: 'SAFE',
+					bold: true,
+					size: 22
+				})
+			],
+			alignment: AlignmentType.CENTER,
+			spacing: { after: 50 }
+		}),
+		new Paragraph({
+			children: [
+				new TextRun({
+					text: '(Simple Agreement for Future Equity)',
+					bold: true,
+					size: 22
+				})
+			],
 			alignment: AlignmentType.CENTER,
 			spacing: { after: 200 }
 		}),
 		new Paragraph({
-			text: template.header
-				.replace('[investorName]', state.investorInfo.investorLegalName || '')
-				.replace('[investmentAmount]', state.investorInfo.investmentAmount?.toLocaleString() || '')
-				.replace('[dateOfSafe]', new Date(state.investorInfo.investDate || '').toLocaleDateString())
-				.replace('[companyName]', state.companyInfo.legalName || '')
-				.replace('[stateIncorporation]', state.companyInfo.stateOfIncorporation || ''),
+			children: [
+				new TextRun({
+					text: 'THIS CERTIFIES THAT in exchange for the payment by ',
+					size: 22
+				}),
+				new TextRun({
+					text: state.investorInfo.investorLegalName || '',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: ' (the "',
+					size: 22
+				}),
+				new TextRun({
+					text: 'Investor',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: '") of ',
+					size: 22
+				}),
+				new TextRun({
+					text: '$' + (state.investorInfo.investmentAmount?.toLocaleString('en-US', {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}) || ''),
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: ' (the "',
+					size: 22
+				}),
+				new TextRun({
+					text: 'Purchase Amount',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: '") on or about ',
+					size: 22
+				}),
+				new TextRun({
+					text: new Date(state.investorInfo.investDate || '').toLocaleDateString(),
+					size: 22
+				}),
+				new TextRun({
+					text: ', ',
+					size: 22
+				}),
+				new TextRun({
+					text: state.companyInfo.legalName || '',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: ', a ',
+					size: 22
+				}),
+				new TextRun({
+					text: state.companyInfo.stateOfIncorporation || '',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: ' corporation (the "',
+					size: 22
+				}),
+				new TextRun({
+					text: 'Company',
+					bold: true,
+					size: 22
+				}),
+				new TextRun({
+					text: '"), issues to the Investor the right to certain shares of the Company\'s Capital Stock, subject to the terms described below.',
+					size: 22
+				})
+			],
+			alignment: AlignmentType.LEFT,
 			spacing: { after: 200 }
 		})
 	]
