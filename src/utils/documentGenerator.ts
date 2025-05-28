@@ -1,37 +1,104 @@
-import { Document, Packer } from 'docx'
-import { SafeFormState } from '@/types/safeForm'
-import { getDocumentTemplate, getProRataTemplate, createDocumentParagraphs } from './documentTemplates'
+import { Document, Packer, Paragraph, TextRun, AlignmentType, Header } from 'docx'
+import { SafeFormData } from '@/types/safeForm'
+import { postMoneyValuationCapTemplate, postMoneyDiscountTemplate, postMoneyValuationCapAndDiscountTemplate, proRataRightsTemplate } from '@/templates/safe'
+import { createDocumentParagraphs } from './documentUtils'
 
-export const generateSafeDocument = (state: SafeFormState): Document => {
-	const template = getDocumentTemplate(state)
-	const paragraphs = createDocumentParagraphs(template, state)
-
+export async function generateSafeDocument(formData: SafeFormData): Promise<Buffer> {
+	const template = getTemplate(formData.safeType)
 	const doc = new Document({
 		sections: [{
-			properties: {},
-			children: paragraphs
+			properties: {
+				page: {
+					margin: {
+						top: 1440,
+						right: 1440,
+						bottom: 1440,
+						left: 1440
+					}
+				}
+			},
+			headers: {
+				default: new Header({
+					children: [
+						new Paragraph({
+							children: [
+								new TextRun({
+									text: template.title,
+									bold: true,
+									size: 20
+								})
+							],
+							alignment: AlignmentType.CENTER,
+							spacing: {
+								before: 200,
+								after: 200
+							}
+						})
+					]
+				})
+			},
+			children: createDocumentParagraphs(template, formData)
 		}]
 	})
 
-	return doc
+	return Packer.toBuffer(doc)
 }
 
-export const generateProRataDocument = (state: SafeFormState): Document => {
-	const template = getProRataTemplate()
-	const paragraphs = createDocumentParagraphs(template, state)
-
+export async function generateProRataDocument(formData: SafeFormData): Promise<Buffer> {
 	const doc = new Document({
 		sections: [{
-			properties: {},
-			children: paragraphs
+			properties: {
+				page: {
+					margin: {
+						top: 1440,
+						right: 1440,
+						bottom: 1440,
+						left: 1440
+					}
+				}
+			},
+			headers: {
+				default: new Header({
+					children: [
+						new Paragraph({
+							children: [
+								new TextRun({
+									text: proRataRightsTemplate.title,
+									bold: true,
+									size: 20
+								})
+							],
+							alignment: AlignmentType.CENTER,
+							spacing: {
+								before: 200,
+								after: 200
+							}
+						})
+					]
+				})
+			},
+			children: createDocumentParagraphs(proRataRightsTemplate, formData)
 		}]
 	})
 
-	return doc
+	return Packer.toBuffer(doc)
 }
 
-export const downloadDocument = async (doc: Document, filename: string) => {
-	const blob = await Packer.toBlob(doc)
+function getTemplate(safeType: string) {
+	switch (safeType) {
+		case 'Post-Money SAFE - Valuation Cap Only':
+			return postMoneyValuationCapTemplate
+		case 'Post-Money SAFE - Discount Only':
+			return postMoneyDiscountTemplate
+		case 'Post-Money SAFE - Valuation Cap and Discount':
+			return postMoneyValuationCapAndDiscountTemplate
+		default:
+			throw new Error(`Invalid SAFE type: ${safeType}`)
+	}
+}
+
+export const downloadDocument = async (buffer: Buffer, filename: string) => {
+	const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })
 	const url = window.URL.createObjectURL(blob)
 	const link = document.createElement('a')
 	link.href = url

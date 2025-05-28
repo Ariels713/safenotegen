@@ -1,7 +1,7 @@
 'use client'
 
 import { useSafeForm } from '@/context/SafeFormContext'
-import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName } from '@/utils/documentUtils'
+import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName, transformStateToFormData } from '@/utils/documentUtils'
 import { generateSafeDocument, generateProRataDocument, downloadDocument } from '@/utils/documentGenerator'
 import styles from '../SafeForm.module.css'
 
@@ -25,15 +25,27 @@ export default function ReviewStep() {
 	}
 
 	const handleDownloadSafe = async () => {
-		const doc = generateSafeDocument(state)
-		const filename = getSafeDocumentName(state)
-		await downloadDocument(doc, filename)
+		try {
+			const formData = transformStateToFormData(state)
+			const doc = await generateSafeDocument(formData)
+			const filename = getSafeDocumentName(state)
+			await downloadDocument(doc, filename)
+		} catch (error) {
+			console.error('Error generating SAFE document:', error)
+			// You might want to show an error message to the user here
+		}
 	}
 
 	const handleDownloadProRata = async () => {
-		const doc = generateProRataDocument(state)
-		const filename = getProRataDocumentName(state)
-		await downloadDocument(doc, filename)
+		try {
+			const formData = transformStateToFormData(state)
+			const doc = await generateProRataDocument(formData)
+			const filename = getProRataDocumentName(state)
+			await downloadDocument(doc, filename)
+		} catch (error) {
+			console.error('Error generating Pro Rata document:', error)
+			// You might want to show an error message to the user here
+		}
 	}
 
 	return (
