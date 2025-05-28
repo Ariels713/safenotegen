@@ -1,4 +1,4 @@
-import { SafeFormState, SafeType } from '@/types/safeForm'
+import { SafeFormState } from '@/types/safeForm'
 
 const COMMON_FIELDS = {
 	company: [
@@ -23,52 +23,41 @@ const COMMON_FIELDS = {
 	]
 }
 
-interface SafeTypeConfig {
-	safeType: {
-		id: string
-		type: string
-		required: boolean
-	}[]
-}
-
-const SAFE_TYPES: Record<SafeType, SafeTypeConfig> = {
-	'postMoneyValuationCap': {
+const SAFE_TYPES = {
+	'Post-Money SAFE - Valuation Cap Only': {
 		safeType: [
 			{ id: 'valuation-cap-input', type: 'currency', required: true },
 			{ id: 'pro-rata-select', type: 'select', required: true }
 		]
 	},
-	'postMoneyDiscount': {
+	'Post-Money SAFE - Discount Only': {
 		safeType: [
 			{ id: 'discount-input', type: 'percentage', required: true },
 			{ id: 'pro-rata-select', type: 'select', required: true }
 		]
 	},
-	'postMoneyMfn': {
+	'Post-Money SAFE - MFN (Most Favored Nation)': {
 		safeType: [
 			{ id: 'pro-rata-select', type: 'select', required: true }
 		]
 	},
-	'preMoneyValuationCap': {
+	'Pre-Money SAFE - Valuation Cap Only': {
 		safeType: [
 			{ id: 'valuation-cap-input', type: 'currency', required: true }
 		]
 	},
-	'preMoneyDiscount': {
+	'Pre-Money SAFE - Discount Only': {
 		safeType: [
 			{ id: 'discount-input', type: 'percentage', required: true }
 		]
 	},
-	'preMoneyValuationCapAndDiscount': {
+	'Pre-Money SAFE - Valuation Cap and Discount': {
 		safeType: [
 			{ id: 'valuation-cap-input', type: 'currency', required: true },
 			{ id: 'discount-input', type: 'percentage', required: true }
 		]
 	},
-	'preMoneyMfn': {
-		safeType: []
-	},
-	'proRata': {
+	'Pre-money SAFE - MFN (Most Favored Nation)': {
 		safeType: []
 	}
 }
@@ -80,7 +69,7 @@ export const validateSafeTypeStep = (state: SafeFormState): boolean => {
 	if (!safeTypeConfig) return false
 
 	// Check all required fields for the selected SAFE type
-	return safeTypeConfig.safeType.every((field: { id: string; required: boolean }) => {
+	return safeTypeConfig.safeType.every((field) => {
 		if (!field.required) return true
 
 		switch (field.id) {

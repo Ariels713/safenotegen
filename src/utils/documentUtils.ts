@@ -1,7 +1,6 @@
-import { SafeFormState, SafeFormData, SafeType } from '@/types/safeForm'
+import { SafeFormState, SafeFormData } from '@/types/safeForm'
 import { Paragraph, TextRun, AlignmentType } from 'docx'
 import { DocumentTemplate } from '@/templates/safe/types'
-import { getDocumentStyle } from './documentStyles'
 
 interface DownloadOptions {
 	showSafeDownload: boolean
@@ -35,7 +34,7 @@ export const transformStateToFormData = (state: SafeFormState): SafeFormData => 
 }
 
 export const getDownloadOptions = (state: SafeFormState): DownloadOptions => {
-	const isPostMoney = Boolean(state.safeType?.startsWith('postMoney'))
+	const isPostMoney = Boolean(state.safeType?.includes('Post-Money'))
 	const hasProRataLetter = state.proRataLetter === 'yes'
 
 	return {
@@ -70,7 +69,6 @@ export const getProRataDocumentName = (state: SafeFormState): string => {
 
 export function createDocumentParagraphs(template: DocumentTemplate, formData: SafeFormData): Paragraph[] {
 	const paragraphs: Paragraph[] = []
-	const style = getDocumentStyle(formData.safeType)
 
 	// Disclaimer
 	paragraphs.push(
@@ -78,76 +76,11 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 			children: [
 				new TextRun({
 					text: template.disclaimer,
-					bold: style.disclaimer.bold,
-					size: style.disclaimer.size
-				})
-			],
-			alignment: style.disclaimer.alignment,
-			spacing: style.disclaimer.spacing
-		})
-	)
-
-	// Company Name
-	paragraphs.push(
-		new Paragraph({
-			children: [
-				new TextRun({
-					text: template.companyName.replace('[companyName]', formData.companyName),
 					bold: true,
-					size: style.title.size
+					size: 20
 				})
 			],
-			alignment: 'center',
-			spacing: {
-				before: 200,
-				after: 200
-			}
-		})
-	)
-
-	// Subtitle
-	paragraphs.push(
-		new Paragraph({
-			children: [
-				new TextRun({
-					text: template.subtitle,
-					bold: true,
-					size: style.title.size
-				})
-			],
-			alignment: 'center',
-			spacing: {
-				before: 200,
-				after: 200
-			}
-		})
-	)
-
-	// YCombinator Note
-	paragraphs.push(
-		new Paragraph({
-			children: [
-				new TextRun({
-					text: template.ycombinatorNote,
-					size: style.section.content.size
-				})
-			],
-			spacing: {
-				before: 200,
-				after: 200
-			}
-		})
-	)
-
-	// Valuation Cap Note
-	paragraphs.push(
-		new Paragraph({
-			children: [
-				new TextRun({
-					text: template.valuationCapNote.replace('[valuationCap]', formData.valuationCap?.toString() || ''),
-					size: style.section.content.size
-				})
-			],
+			alignment: AlignmentType.CENTER,
 			spacing: {
 				before: 200,
 				after: 200
@@ -166,11 +99,13 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 						.replace('[dateOfSafe]', formData.dateOfSafe)
 						.replace('[companyName]', formData.companyName)
 						.replace('[stateIncorporation]', formData.stateIncorporation),
-					bold: style.header.bold,
-					size: style.header.size
+					size: 20
 				})
 			],
-			spacing: style.header.spacing
+			spacing: {
+				before: 200,
+				after: 200
+			}
 		})
 	)
 
@@ -181,11 +116,14 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 				children: [
 					new TextRun({
 						text: section.title,
-						bold: style.section.title.bold,
-						size: style.section.title.size
+						bold: true,
+						size: 20
 					})
 				],
-				spacing: style.section.title.spacing
+				spacing: {
+					before: 200,
+					after: 200
+				}
 			})
 		)
 
@@ -194,30 +132,16 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 				children: [
 					new TextRun({
 						text: section.content,
-						size: style.section.content.size
+						size: 20
 					})
 				],
-				spacing: style.section.content.spacing
+				spacing: {
+					before: 200,
+					after: 200
+				}
 			})
 		)
 	})
-
-	// Witness
-	paragraphs.push(
-		new Paragraph({
-			children: [
-				new TextRun({
-					text: template.signature.witness,
-					bold: true,
-					size: style.signature.title.size
-				})
-			],
-			spacing: {
-				before: 400,
-				after: 200
-			}
-		})
-	)
 
 	// Signature
 	paragraphs.push(
@@ -225,11 +149,14 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 			children: [
 				new TextRun({
 					text: template.signature.company.title,
-					bold: style.signature.title.bold,
-					size: style.signature.title.size
+					bold: true,
+					size: 20
 				})
 			],
-			spacing: style.signature.title.spacing
+			spacing: {
+				before: 200,
+				after: 200
+			}
 		})
 	)
 
@@ -244,10 +171,13 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 							.replace('[signatoryTitle]', formData.signatoryTitle)
 							.replace('[companyAddress]', formData.companyAddress)
 							.replace('[signatoryEmail]', formData.signatoryEmail),
-						size: style.signature.field.size
+						size: 20
 					})
 				],
-				spacing: style.signature.field.spacing
+				spacing: {
+					before: 200,
+					after: 200
+				}
 			})
 		)
 	})
@@ -257,11 +187,14 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 			children: [
 				new TextRun({
 					text: template.signature.investor.title,
-					bold: style.signature.title.bold,
-					size: style.signature.title.size
+					bold: true,
+					size: 20
 				})
 			],
-			spacing: style.signature.title.spacing
+			spacing: {
+				before: 200,
+				after: 200
+			}
 		})
 	)
 
@@ -275,10 +208,13 @@ export function createDocumentParagraphs(template: DocumentTemplate, formData: S
 							.replace('[entitySignatoryTitle]', formData.entitySignatoryTitle)
 							.replace('[investorAddress]', formData.investorAddress)
 							.replace('[entitySignatoryEmail]', formData.entitySignatoryEmail),
-						size: style.signature.field.size
+						size: 20
 					})
 				],
-				spacing: style.signature.field.spacing
+				spacing: {
+					before: 200,
+					after: 200
+				}
 			})
 		)
 	})

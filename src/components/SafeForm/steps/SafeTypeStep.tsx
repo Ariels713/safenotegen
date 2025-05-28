@@ -5,13 +5,13 @@ import { SafeType } from '@/types/safeForm'
 import styles from '../SafeForm.module.css'
 
 const SAFE_TYPES: SafeType[] = [
-	'postMoneyValuationCap',
-	'postMoneyDiscount',
-	'postMoneyMfn',
-	'preMoneyValuationCap',
-	'preMoneyDiscount',
-	'preMoneyValuationCapAndDiscount',
-	'preMoneyMfn'
+	'Post-Money SAFE - Valuation Cap Only',
+	'Post-Money SAFE - Discount Only',
+	'Post-Money SAFE - MFN (Most Favored Nation)',
+	'Pre-Money SAFE - Valuation Cap Only',
+	'Pre-Money SAFE - Discount Only',
+	'Pre-Money SAFE - Valuation Cap and Discount',
+	'Pre-money SAFE - MFN (Most Favored Nation)'
 ]
 
 export default function SafeTypeStep() {
@@ -29,19 +29,19 @@ export default function SafeTypeStep() {
 
 		// Check required fields based on SAFE type
 		switch (state.safeType) {
-			case 'postMoneyValuationCap':
+			case 'Post-Money SAFE - Valuation Cap Only':
 				return !!state.valuationCap
-			case 'postMoneyDiscount':
+			case 'Post-Money SAFE - Discount Only':
 				return !!state.discount
-			case 'postMoneyMfn':
+			case 'Post-Money SAFE - MFN (Most Favored Nation)':
 				return true
-			case 'preMoneyValuationCap':
+			case 'Pre-Money SAFE - Valuation Cap Only':
 				return !!state.valuationCap
-			case 'preMoneyDiscount':
+			case 'Pre-Money SAFE - Discount Only':
 				return !!state.discount
-			case 'preMoneyValuationCapAndDiscount':
+			case 'Pre-Money SAFE - Valuation Cap and Discount':
 				return !!state.valuationCap && !!state.discount
-			case 'preMoneyMfn':
+			case 'Pre-money SAFE - MFN (Most Favored Nation)':
 				return true // No required fields for this type
 			default:
 				return false
@@ -49,14 +49,14 @@ export default function SafeTypeStep() {
 	}
 
 	const showValuationCap =
-		state.safeType?.includes('ValuationCap') &&
-		!state.safeType?.includes('Discount')
+		state.safeType?.includes('Valuation Cap') &&
+		!state.safeType?.includes('Discount Only')
 
 	const showDiscount =
 		state.safeType?.includes('Discount') &&
-		!state.safeType?.includes('ValuationCap')
+		!state.safeType?.includes('Valuation Cap Only')
 
-	const showProRata = state.safeType?.startsWith('postMoney')
+	const showProRata = state.safeType?.includes('Post-Money')
 
 	return (
 		<>
