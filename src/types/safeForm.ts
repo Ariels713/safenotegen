@@ -1,4 +1,4 @@
-export type SafeType =
+export type SafeType = 
 	| 'Post-Money SAFE - Valuation Cap Only'
 	| 'Post-Money SAFE - Discount Only'
 	| 'Post-Money SAFE - MFN (Most Favored Nation)'
@@ -29,6 +29,30 @@ export interface InvestorInfo {
 	authorizedSignatoryTitle?: string
 	authorizedSignatoryEmail?: string
 	additionalBylines?: string
+	postMoneyValuationCap?: number
+	companyLegalName?: string
+	stateOfIncorporation?: string
+}
+
+export interface SafeFormData {
+	safeType: SafeType
+	companyName: string
+	stateIncorporation: string
+	investorName: string
+	dateOfSafe: string
+	investmentAmount: number
+	valuationCap?: number
+	discountRate?: number
+	companyCapitalization?: number
+	stateGovernance: string
+	companyAddress: string
+	signatoryName: string
+	signatoryTitle: string
+	signatoryEmail: string
+	investorAddress: string
+	entitySignatoryName: string
+	entitySignatoryTitle: string
+	entitySignatoryEmail: string
 }
 
 export interface SafeFormState {
