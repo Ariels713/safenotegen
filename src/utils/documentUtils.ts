@@ -1,5 +1,5 @@
 import { SafeFormState } from '@/types/safeForm'
-import { generateSafeDocument, generateProRataLetter } from './document-generator'
+import { generateDocument, generateProRataLetter } from './document-generator'
 
 interface DownloadOptions {
 	showSafeDownload: boolean
@@ -41,7 +41,7 @@ export const getProRataDocumentName = (state: SafeFormState): string => {
 }
 
 export const downloadSafeDocument = async (state: SafeFormState): Promise<void> => {
-	const blob = await generateSafeDocument(state)
+	const blob = await generateDocument(state)
 	const url = window.URL.createObjectURL(blob)
 	const a = document.createElement('a')
 	a.href = url
@@ -62,4 +62,26 @@ export const downloadProRataLetter = async (state: SafeFormState): Promise<void>
 	a.click()
 	window.URL.revokeObjectURL(url)
 	document.body.removeChild(a)
+}
+
+export const downloadDocuments = async (state: SafeFormState, options: DownloadOptions) => {
+	const documents: { blob: Blob; filename: string }[] = []
+
+	if (options.showSafeDownload) {
+		const safeBlob = await generateDocument(state)
+		documents.push({
+			blob: safeBlob,
+			filename: `${state.companyInfo.legalName || 'Company'}_SAFE.docx`
+		})
+	}
+
+	if (options.showProRataDownload) {
+		const proRataBlob = await generateProRataLetter(state)
+		documents.push({
+			blob: proRataBlob,
+			filename: `${state.companyInfo.legalName || 'Company'}_Pro_Rata_Agreement.docx`
+		})
+	}
+
+	return documents
 } 
