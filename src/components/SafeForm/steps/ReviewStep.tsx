@@ -1,12 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
-import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName } from '@/utils/documentUtils'
+import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
 	const { state, updateStep } = useSafeForm()
 	const downloadOptions = getDownloadOptions(state)
+	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
+	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
@@ -23,14 +26,28 @@ export default function ReviewStep() {
 		})
 	}
 
-	const handleDownloadSafe = () => {
-		// TODO: Implement SAFE document generation
-		console.log('Downloading SAFE:', getSafeDocumentName(state))
+	const handleDownloadSafe = async () => {
+		try {
+			setIsSafeDownloading(true)
+			await downloadSafeDocument(state)
+		} catch (error) {
+			console.error('Error downloading SAFE document:', error)
+			// TODO: Add proper error handling UI
+		} finally {
+			setIsSafeDownloading(false)
+		}
 	}
 
-	const handleDownloadProRata = () => {
-		// TODO: Implement Pro Rata letter generation
-		console.log('Downloading Pro Rata:', getProRataDocumentName(state))
+	const handleDownloadProRata = async () => {
+		try {
+			setIsProRataDownloading(true)
+			await downloadProRataLetter(state)
+		} catch (error) {
+			console.error('Error downloading Pro Rata letter:', error)
+			// TODO: Add proper error handling UI
+		} finally {
+			setIsProRataDownloading(false)
+		}
 	}
 
 	return (
@@ -164,6 +181,7 @@ export default function ReviewStep() {
 				<button
 					className={`${styles.button} ${styles.secondaryButton}`}
 					onClick={() => updateStep(4)}
+					disabled={isSafeDownloading || isProRataDownloading}
 				>
 					Back
 				</button>
@@ -171,16 +189,18 @@ export default function ReviewStep() {
 					<button
 						className={styles.button}
 						onClick={handleDownloadSafe}
+						disabled={isSafeDownloading || isProRataDownloading}
 					>
-						Download SAFE
+						{isSafeDownloading ? 'Generating...' : 'Download SAFE'}
 					</button>
 				)}
 				{downloadOptions.showProRataDownload && (
 					<button
 						className={styles.button}
 						onClick={handleDownloadProRata}
+						disabled={isSafeDownloading || isProRataDownloading}
 					>
-						Download Pro Rata Letter
+						{isProRataDownloading ? 'Generating...' : 'Download Pro Rata Letter'}
 					</button>
 				)}
 			</div>
