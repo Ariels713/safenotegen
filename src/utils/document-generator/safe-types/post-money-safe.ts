@@ -3,7 +3,6 @@ import {
   Packer,
   Paragraph,
   TextRun,
-  HeadingLevel,
   AlignmentType,
   Header,
   Footer,
@@ -181,7 +180,7 @@ export const generatePostMoneySafe = async (
                 text: 'The "Post-Money Valuation Cap" is $',
               }),
               new TextRun({
-                text: state.valuationCap || "_________________",
+                text: String(state.valuationCap) || "_________________",
                 bold: true,
               }),
               new TextRun({
@@ -230,7 +229,7 @@ export const generatePostMoneySafe = async (
               }),
               new TextRun({
                 text: `" is $${
-                  state.valuationCap || "_________________"
+                  String(state.valuationCap) || "_________________"
                 }.  See `,
               }),
               new TextRun({
