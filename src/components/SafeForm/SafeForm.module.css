@@ -212,9 +212,9 @@
 	border-color: #00a688;
 }
 
-.error {
+.error, .errorMessage {
 	color: #dc2626;
-	font-size: 0.875rem;
+	font-size: 0.675rem;
 	margin-top: 0.25rem;
 }
 

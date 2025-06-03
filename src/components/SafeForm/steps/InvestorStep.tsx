@@ -3,21 +3,74 @@
 import { useSafeForm } from '@/context/SafeFormContext'
 import { EntityType } from '@/types/safeForm'
 import styles from '../SafeForm.module.css'
+import { useState, useEffect } from 'react'
 
 const ENTITY_TYPES: EntityType[] = ['Individual', 'LLC', 'Corporation']
 
 export default function InvestorStep() {
 	const { state, updateInvestorInfo, updateStep } = useSafeForm()
+	const [formattedInvestmentAmount, setFormattedInvestmentAmount] = useState<string>('')
+	const [emailError, setEmailError] = useState<string>('')
+
+	useEffect(() => {
+		if (state.investorInfo.investmentAmount !== undefined) {
+			const formatter = new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: 'USD',
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			})
+			setFormattedInvestmentAmount(formatter.format(state.investorInfo.investmentAmount))
+		} else {
+			setFormattedInvestmentAmount('')
+		}
+	}, [state.investorInfo.investmentAmount])
+
+	const validateEmail = (email: string): boolean => {
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+		return emailRegex.test(email)
+	}
+
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const email = e.target.value
+		updateInvestorInfo({ authorizedSignatoryEmail: email })
+
+		if (!email) {
+			setEmailError('')
+			return
+		}
+
+		if (!validateEmail(email)) {
+			setEmailError('Please enter a valid email address')
+		} else {
+			setEmailError('')
+		}
+	}
+
+	const handleInvestmentAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value.replace(/[^0-9]/g, '')
+		updateInvestorInfo({
+			...state.investorInfo,
+			investmentAmount: value ? Number(value) : undefined
+		})
+	}
 
 	const handleContinue = () => {
 		const {
 			entityType,
 			investorLegalName,
 			investmentAmount,
-			investDate
+			investDate,
+			authorizedSignatoryEmail
 		} = state.investorInfo
 
-		if (entityType && investorLegalName && investmentAmount && investDate) {
+		if (
+			entityType &&
+			investorLegalName &&
+			investmentAmount &&
+			investDate &&
+			(!showSignatoryFields || (showSignatoryFields && validateEmail(authorizedSignatoryEmail || '')))
+		) {
 			updateStep(5)
 		}
 	}
@@ -79,15 +132,11 @@ export default function InvestorStep() {
 							Investment Amount
 						</label>
 						<input
-							type="number"
+							type="text"
 							id="investmentAmount"
 							className={styles.input}
-							value={state.investorInfo.investmentAmount || ''}
-							onChange={(e) =>
-								updateInvestorInfo({
-									investmentAmount: Number(e.target.value)
-								})
-							}
+							value={formattedInvestmentAmount}
+							onChange={handleInvestmentAmountChange}
 							placeholder="Enter investment amount"
 							required
 						/>
@@ -189,16 +238,15 @@ export default function InvestorStep() {
 						<input
 							type="email"
 							id="authorizedSignatoryEmail"
-							className={styles.input}
+							className={`${styles.input} ${emailError ? styles.inputError : ''}`}
 							value={state.investorInfo.authorizedSignatoryEmail || ''}
-							onChange={(e) =>
-								updateInvestorInfo({
-									authorizedSignatoryEmail: e.target.value
-								})
-							}
+							onChange={handleEmailChange}
 							placeholder="Enter authorized signatory email"
 							required
 						/>
+						{emailError && (
+							<span className={styles.errorMessage}>{emailError}</span>
+						)}
 					</div>
 				</>
 			)}
@@ -236,7 +284,8 @@ export default function InvestorStep() {
 						(showSignatoryFields &&
 							(!state.investorInfo.authorizedSignatoryName ||
 								!state.investorInfo.authorizedSignatoryTitle ||
-								!state.investorInfo.authorizedSignatoryEmail))
+								!state.investorInfo.authorizedSignatoryEmail ||
+								!!emailError))
 					}
 				>
 					Continue

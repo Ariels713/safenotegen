@@ -3,6 +3,7 @@
 import { useSafeForm } from '@/context/SafeFormContext'
 import { SafeType } from '@/types/safeForm'
 import styles from '../SafeForm.module.css'
+import { useState, useEffect } from 'react'
 
 const SAFE_TYPES: SafeType[] = [
 	'Post-Money SAFE - Valuation Cap Only',
@@ -17,6 +18,51 @@ const SAFE_TYPES: SafeType[] = [
 export default function SafeTypeStep() {
 	const { state, updateSafeType, updateValuationCap, updateDiscount, updateStep, updateProRataLetter } =
 		useSafeForm()
+	const [formattedValuationCap, setFormattedValuationCap] = useState<string>('')
+	const [discountError, setDiscountError] = useState<string>('')
+
+	useEffect(() => {
+		if (state.valuationCap !== undefined) {
+			const formatter = new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: 'USD',
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			})
+			setFormattedValuationCap(formatter.format(state.valuationCap))
+		} else {
+			setFormattedValuationCap('')
+		}
+	}, [state.valuationCap])
+
+	const handleValuationCapChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value.replace(/[^0-9]/g, '')
+		updateValuationCap(value ? Number(value) : undefined)
+	}
+
+	const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value.replace(/[^0-9.]/g, '')
+		const numValue = Number(value)
+		
+		if (value === '') {
+			updateDiscount(undefined)
+			setDiscountError('')
+			return
+		}
+
+		if (isNaN(numValue)) {
+			setDiscountError('Please enter a valid number')
+			return
+		}
+
+		if (numValue < 0 || numValue > 100) {
+			setDiscountError('Discount must be between 0 and 100')
+			return
+		}
+
+		setDiscountError('')
+		updateDiscount(numValue)
+	}
 
 	const handleContinue = () => {
 		if (isStepValid()) {
@@ -92,11 +138,11 @@ export default function SafeTypeStep() {
 						Valuation Cap
 					</label>
 					<input
-						type="number"
+						type="text"
 						id="valuationCap"
 						className={styles.input}
-						value={state.valuationCap || ''}
-						onChange={(e) => updateValuationCap(Number(e.target.value))}
+						value={formattedValuationCap}
+						onChange={handleValuationCapChange}
 						placeholder="Enter valuation cap amount"
 						required
 					/>
@@ -109,16 +155,17 @@ export default function SafeTypeStep() {
 						Discount Percentage
 					</label>
 					<input
-						type="number"
+						type="text"
 						id="discount"
-						className={styles.input}
+						className={`${styles.input} ${discountError ? styles.inputError : ''}`}
 						value={state.discount || ''}
-						onChange={(e) => updateDiscount(Number(e.target.value))}
-						placeholder="Enter discount percentage"
-						min="0"
-						max="100"
+						onChange={handleDiscountChange}
+						placeholder="Enter discount percentage (0-100)"
 						required
 					/>
+					{discountError && (
+						<span className={styles.errorMessage}>{discountError}</span>
+					)}
 				</div>
 			)}
 
