@@ -240,6 +240,12 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 								text: " for certain additional defined terms.",
 							}),
 						],
+						spacing: {
+							after: 200,
+						},
+						indent: {
+							firstLine: 500,
+						},
 					}),
 
 					// Section 1: Events
