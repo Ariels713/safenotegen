@@ -226,7 +226,6 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						},
 					}),
 
-					// add the following Paragraph: See Section 2 for certain additional defined terms. Section 2 should be bolded. 
 					new Paragraph({
 						children: [
 							new TextRun({
@@ -1135,9 +1134,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1145,9 +1142,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 50,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1162,9 +1157,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 50,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					...(state.companyInfo.authorizedSignatoryTitle
@@ -1196,9 +1189,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					...(state.companyInfo.authorizedSignatoryEmail
@@ -1230,9 +1221,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1244,9 +1233,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 50,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1262,9 +1249,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 50,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1279,9 +1264,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1296,9 +1279,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 
 					new Paragraph({
@@ -1313,9 +1294,7 @@ export const generatePostMoneyDiscountSafe = async (state: SafeFormState): Promi
 						spacing: {
 							after: 200,
 						},
-						indent: {
-							firstLine: 500,
-						},
+
 					}),
 				],
 			},

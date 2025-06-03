@@ -1016,9 +1016,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1026,9 +1024,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1043,9 +1039,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				...(state.companyInfo.authorizedSignatoryTitle
@@ -1077,9 +1071,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				...(state.companyInfo.authorizedSignatoryEmail
@@ -1111,9 +1103,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1125,9 +1115,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1143,9 +1131,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1160,9 +1146,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1177,9 +1161,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				}),
 
 				new Paragraph({
@@ -1194,9 +1176,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
+
 				})
 			]
 		}]

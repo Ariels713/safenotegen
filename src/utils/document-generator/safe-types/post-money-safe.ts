@@ -1390,9 +1390,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1400,9 +1398,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 50,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1417,9 +1413,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 50,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           ...(state.companyInfo.authorizedSignatoryTitle
@@ -1451,9 +1445,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           ...(state.companyInfo.authorizedSignatoryEmail
@@ -1485,9 +1477,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1499,9 +1489,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1517,9 +1505,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1534,9 +1520,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 400,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1551,9 +1535,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
 
           new Paragraph({
@@ -1568,9 +1550,7 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 200,
             },
-            indent: {
-              firstLine: 500,
-            },
+
           }),
         ],
       },
