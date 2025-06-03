@@ -3,11 +3,35 @@
 import { useSafeForm } from '@/context/SafeFormContext'
 import { EntityType } from '@/types/safeForm'
 import styles from '../SafeForm.module.css'
+import { useState, useEffect } from 'react'
 
 const ENTITY_TYPES: EntityType[] = ['Individual', 'LLC', 'Corporation']
 
 export default function InvestorStep() {
 	const { state, updateInvestorInfo, updateStep } = useSafeForm()
+	const [formattedInvestmentAmount, setFormattedInvestmentAmount] = useState<string>('')
+
+	useEffect(() => {
+		if (state.investorInfo.investmentAmount !== undefined) {
+			const formatter = new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: 'USD',
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			})
+			setFormattedInvestmentAmount(formatter.format(state.investorInfo.investmentAmount))
+		} else {
+			setFormattedInvestmentAmount('')
+		}
+	}, [state.investorInfo.investmentAmount])
+
+	const handleInvestmentAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value.replace(/[^0-9]/g, '')
+		updateInvestorInfo({
+			...state.investorInfo,
+			investmentAmount: value ? Number(value) : undefined
+		})
+	}
 
 	const handleContinue = () => {
 		const {
@@ -79,15 +103,11 @@ export default function InvestorStep() {
 							Investment Amount
 						</label>
 						<input
-							type="number"
+							type="text"
 							id="investmentAmount"
 							className={styles.input}
-							value={state.investorInfo.investmentAmount || ''}
-							onChange={(e) =>
-								updateInvestorInfo({
-									investmentAmount: Number(e.target.value)
-								})
-							}
+							value={formattedInvestmentAmount}
+							onChange={handleInvestmentAmountChange}
 							placeholder="Enter investment amount"
 							required
 						/>

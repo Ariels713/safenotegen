@@ -12,6 +12,15 @@ import {
 } from "docx";
 import { SafeFormState } from "@/types/safeForm";
 
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount)
+}
+
 export const generatePostMoneySafe = async (
   state: SafeFormState
 ): Promise<Blob> => {
@@ -142,8 +151,10 @@ export const generatePostMoneySafe = async (
                 bold: true,
               }),
               new TextRun({
-                text: `") of $${
-                  state.investorInfo.investmentAmount || "_________________"
+                text: `") of ${
+                  state.investorInfo.investmentAmount 
+                    ? formatCurrency(state.investorInfo.investmentAmount)
+                    : "_________________"
                 } (the "`,
               }),
               new TextRun({
@@ -180,7 +191,9 @@ export const generatePostMoneySafe = async (
                 text: 'The "Post-Money Valuation Cap" is $',
               }),
               new TextRun({
-                text: String(state.valuationCap) || "_________________",
+                text: state.valuationCap 
+                  ? formatCurrency(state.valuationCap)
+                  : "_________________",
                 bold: true,
               }),
               new TextRun({
@@ -228,8 +241,10 @@ export const generatePostMoneySafe = async (
                 bold: true,
               }),
               new TextRun({
-                text: `" is $${
-                  String(state.valuationCap) || "_________________"
+                text: `" is ${
+                  state.valuationCap 
+                    ? formatCurrency(state.valuationCap)
+                    : "_________________"
                 }.  See `,
               }),
               new TextRun({
