@@ -184,51 +184,27 @@ export const generatePostMoneySafe = async (
             },
           }),
 
-          // Post-Money Valuation Cap paragraph (new, after intro)
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: 'The "Post-Money Valuation Cap" is $',
-              }),
-              new TextRun({
-                text: state.valuationCap 
-                  ? formatCurrency(state.valuationCap)
-                  : "_________________",
-                bold: true,
-              }),
-              new TextRun({
-                text: ".  See Section 2 for certain additional defined terms.",
-              }),
-            ],
-            spacing: {
-              after: 200,
-            },
-            indent: {
-              firstLine: 500,
-            },
-          }),
-
-          // Form Notice
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: "This Safe is one of the forms available at ",
-              }),
-              new TextRun({
-                text: "ycombinator.com/documents",
-                style: "Hyperlink",
-              }),
-              new TextRun({
-                text: " and the Company and the Investor agree that neither one has modified the form, except to fill in blanks and bracketed terms.",
-              }),
-            ],
-            spacing: {
-              after: 200,
-            },
-            indent: {
-              firstLine: 500,
-            },
-          }),
+		  // Form Notice
+		  new Paragraph({
+			children: [
+			  new TextRun({
+				text: "This Safe is one of the forms available at ",
+			  }),
+			  new TextRun({
+				text: "ycombinator.com/documents",
+				style: "Hyperlink",
+			  }),
+			  new TextRun({
+				text: " and the Company and the Investor agree that neither one has modified the form, except to fill in blanks and bracketed terms.",
+			  }),
+			],
+			spacing: {
+			  after: 200,
+			},
+			indent: {
+			  firstLine: 500,
+			},
+		  }),
 
           // Post-Money Valuation Cap
           new Paragraph({
@@ -417,7 +393,7 @@ export const generatePostMoneySafe = async (
           new Paragraph({
             children: [
               new TextRun({
-                text: "(ii) On par with payments for other Safes and/or Preferred Stock, and if the applicable Proceeds are insufficient to permit full payments to the Investor and such other Safes and/or Preferred Stock, the applicable Proceeds will be distributed pro rata to the Investor and such other Safes and/or Preferred Stock in proportion to the full payments that would otherwise be due;",
+                text: "(ii) On par with payments for other Safes and/or Preferred Stock, and if the applicable Proceeds are insufficient to permit full payments to the Investor and such other Safes and/or Preferred Stock, the applicable Proceeds will be distributed pro rata to the Investor and such other Safes and/or Preferred Stock in proportion to the full payments that would otherwise be due; and",
               }),
             ],
             indent: {
@@ -552,7 +528,7 @@ export const generatePostMoneySafe = async (
                 text: '"',
               }),
               new TextRun({
-                text: '"Company Capitalization"',
+                text: 'Company Capitalization',
                 bold: true,
               }),
               new TextRun({
@@ -956,12 +932,13 @@ export const generatePostMoneySafe = async (
               }),
             ],
             spacing: {
-              after: 200,
+              after: 400,
             },
             indent: {
               firstLine: 500,
             },
           }),
+		  // Safe Preferred Stock definition (insert after Safe)
           new Paragraph({
             children: [
               new TextRun({
@@ -976,13 +953,36 @@ export const generatePostMoneySafe = async (
               }),
             ],
             spacing: {
-              after: 200,
+              after: 400,
             },
             indent: {
               firstLine: 500,
             },
           }),
 
+		//   add this paragraph bold the first word:  “Safe Price” means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization.
+		new Paragraph({
+			children: [
+				new TextRun({
+					text: '"',
+				}),
+				new TextRun({
+					text: "Safe Price",
+					bold: true,
+				}),
+				new TextRun({
+					text: '" means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization.',
+				}),
+			],
+			spacing: {
+				after: 400,
+			},
+			indent: {
+				firstLine: 500,
+			},
+		}),
+
+		  // Standard Preferred Stock definition (insert after Safe Preferred Stock)
           new Paragraph({
             children: [
               new TextRun({
@@ -1070,7 +1070,7 @@ export const generatePostMoneySafe = async (
                 bold: true,
               }),
               new TextRun({
-                text: "The execution, delivery and performance by the Company of this Safe is within the power of the Company and has been duly authorized by all necessary actions on the part of the Company (subject to section 3(d)). This Safe constitutes a legal, valid and binding obligation of the Company, enforceable against the Company in accordance with its terms, except as limited by bankruptcy, insolvency or other laws of general application relating to or affecting the enforcement of creditors' rights generally and general principles of equity.",
+                text: "The execution, delivery and performance by the Company of this Safe is within the power of the Company and has been duly authorized by all necessary actions on the part of the Company (subject to section 3(d)). This Safe constitutes a legal, valid and binding obligation of the Company, enforceable against the Company in accordance with its terms, except as limited by bankruptcy, insolvency or other laws of general application relating to or affecting the enforcement of creditors’ rights generally and general principles of equity.  To its knowledge, the Company is not in violation of (i) its current certificate of incorporation or bylaws, (ii) any material statute, rule or regulation applicable to the Company or (iii) any material debt or contract to which the Company is a party or by which it is bound, where, in each case, such violation or default, individually, or together with all such violations or defaults, could reasonably be expected to have a material adverse effect on the Company.",
               }),
             ],
             spacing: {
