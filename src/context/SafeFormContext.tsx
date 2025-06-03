@@ -8,8 +8,8 @@ interface SafeFormContextType {
 	updateStep: (step: number) => void
 	updateDisclaimer: (accepted: boolean) => void
 	updateSafeType: (type: SafeType) => void
-	updateValuationCap: (amount: number) => void
-	updateDiscount: (amount: number) => void
+	updateValuationCap: (amount: number | undefined) => void
+	updateDiscount: (amount: number | undefined) => void
 	updateProRataLetter: (include: boolean) => void
 	updateCompanyInfo: (info: Partial<CompanyInfo>) => void
 	updateInvestorInfo: (info: Partial<InvestorInfo>) => void
@@ -28,8 +28,8 @@ type Action =
 	| { type: 'UPDATE_STEP'; payload: number }
 	| { type: 'UPDATE_DISCLAIMER'; payload: boolean }
 	| { type: 'UPDATE_SAFE_TYPE'; payload: SafeType }
-	| { type: 'UPDATE_VALUATION_CAP'; payload: number }
-	| { type: 'UPDATE_DISCOUNT'; payload: number }
+	| { type: 'UPDATE_VALUATION_CAP'; payload: number | undefined }
+	| { type: 'UPDATE_DISCOUNT'; payload: number | undefined }
 	| { type: 'UPDATE_PRO_RATA_LETTER'; payload: boolean }
 	| { type: 'UPDATE_COMPANY_INFO'; payload: Partial<CompanyInfo> }
 	| { type: 'UPDATE_INVESTOR_INFO'; payload: Partial<InvestorInfo> }
@@ -80,11 +80,11 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 		dispatch({ type: 'UPDATE_SAFE_TYPE', payload: type })
 	}
 
-	const updateValuationCap = (amount: number) => {
+	const updateValuationCap = (amount: number | undefined) => {
 		dispatch({ type: 'UPDATE_VALUATION_CAP', payload: amount })
 	}
 
-	const updateDiscount = (amount: number) => {
+	const updateDiscount = (amount: number | undefined) => {
 		dispatch({ type: 'UPDATE_DISCOUNT', payload: amount })
 	}
 
