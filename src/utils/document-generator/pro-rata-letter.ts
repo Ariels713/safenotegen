@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx'
+import { Document, Packer, Paragraph, TextRun, AlignmentType } from 'docx'
 import { SafeFormState } from '@/types/safeForm'
 
 export const generateProRataLetter = async (state: SafeFormState): Promise<Blob> => {

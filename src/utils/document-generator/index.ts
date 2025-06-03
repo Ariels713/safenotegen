@@ -1,4 +1,4 @@
-import { SafeFormState, SafeType } from '@/types/safeForm'
+import { SafeFormState } from '@/types/safeForm'
 import { generatePostMoneySafe } from './safe-types/post-money-safe'
 import { generatePostMoneyDiscountSafe } from './safe-types/post-money-discount-safe'
 import { generatePostMoneyMfnSafe } from './safe-types/post-money-mfn-safe'

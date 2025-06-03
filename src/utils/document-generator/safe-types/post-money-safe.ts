@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, Header, Footer, PageNumber, NumberFormat, PageBreak } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Header, Footer, PageNumber, NumberFormat, PageBreak } from 'docx'
 import { SafeFormState } from '@/types/safeForm'
 
 export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob> => {
@@ -907,7 +907,7 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 							bold: true
 						}),
 						new TextRun({
-							text: `All rights and obligations hereunder will be governed by the laws of the State of ${state.governingLawJurisdiction || '_________________'}, without regard to the conflicts of law provisions of such jurisdiction.`
+							text: `All rights and obligations hereunder will be governed by the laws of the State of ${state.companyInfo.stateOfGovernance || '_________________'}, without regard to the conflicts of law provisions of such jurisdiction.`
 						})
 					],
 					spacing: {

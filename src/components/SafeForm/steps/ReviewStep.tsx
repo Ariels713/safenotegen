@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
-import { getDownloadOptions, getSafeDocumentName, getProRataDocumentName, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
+import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {

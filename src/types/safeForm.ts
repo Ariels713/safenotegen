@@ -40,7 +40,6 @@ export interface SafeFormState {
 	proRataLetter: string
 	companyInfo: Partial<CompanyInfo>
 	investorInfo: Partial<InvestorInfo>
-	governingLawJurisdiction: string
 }
 
 export interface FormStep {
