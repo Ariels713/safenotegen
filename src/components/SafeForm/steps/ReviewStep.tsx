@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
 import styles from '../SafeForm.module.css'
+import DownloadDropdown from '../components/DownloadDropdown'
 
 export default function ReviewStep() {
 	const { state, updateStep } = useSafeForm()
@@ -26,10 +27,15 @@ export default function ReviewStep() {
 		})
 	}
 
-	const handleDownloadSafe = async () => {
+	const handleDownloadSafe = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsSafeDownloading(true)
-			await downloadSafeDocument(state)
+			if (format === 'docx') {
+				await downloadSafeDocument(state)
+			} else {
+				// TODO: Implement PDF download
+				console.log('PDF download not implemented yet')
+			}
 		} catch (error) {
 			console.error('Error downloading SAFE document:', error)
 			// TODO: Add proper error handling UI
@@ -38,10 +44,15 @@ export default function ReviewStep() {
 		}
 	}
 
-	const handleDownloadProRata = async () => {
+	const handleDownloadProRata = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsProRataDownloading(true)
-			await downloadProRataLetter(state)
+			if (format === 'docx') {
+				await downloadProRataLetter(state)
+			} else {
+				// TODO: Implement PDF download
+				console.log('PDF download not implemented yet')
+			}
 		} catch (error) {
 			console.error('Error downloading Pro Rata letter:', error)
 			// TODO: Add proper error handling UI
@@ -186,22 +197,18 @@ export default function ReviewStep() {
 					Back
 				</button>
 				{downloadOptions.showSafeDownload && (
-					<button
-						className={styles.button}
-						onClick={handleDownloadSafe}
-						disabled={isSafeDownloading || isProRataDownloading}
-					>
-						{isSafeDownloading ? 'Generating...' : 'Download SAFE'}
-					</button>
+					<DownloadDropdown
+						label="Download SAFE"
+						onDownload={handleDownloadSafe}
+						isDownloading={isSafeDownloading}
+					/>
 				)}
 				{downloadOptions.showProRataDownload && (
-					<button
-						className={styles.button}
-						onClick={handleDownloadProRata}
-						disabled={isSafeDownloading || isProRataDownloading}
-					>
-						{isProRataDownloading ? 'Generating...' : 'Download Pro Rata Letter'}
-					</button>
+					<DownloadDropdown
+						label="Download Pro Rata Letter"
+						onDownload={handleDownloadProRata}
+						isDownloading={isProRataDownloading}
+					/>
 				)}
 			</div>
 		</>
