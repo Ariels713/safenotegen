@@ -1377,9 +1377,6 @@ export const generatePostMoneySafe = async (
             spacing: {
               after: 400,
             },
-            indent: {
-              firstLine: 500,
-            },
           }),
 
           // Company Signature

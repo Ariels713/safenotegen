@@ -1002,10 +1002,7 @@ export const generatePostMoneyMfnSafe = async (state: SafeFormState): Promise<Bl
 					text: 'IN WITNESS WHEREOF, the undersigned have caused this Safe to be duly executed and delivered.',
 					spacing: {
 						after: 400,
-					},
-					indent: {
-						firstLine: 500,
-					},
+					}
 				}),
 
 				// Company Signature
