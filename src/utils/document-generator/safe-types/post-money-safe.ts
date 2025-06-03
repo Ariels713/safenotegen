@@ -1,30 +1,81 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, Header, Footer, PageNumber, NumberFormat, PageBreak } from 'docx'
 import { SafeFormState } from '@/types/safeForm'
 
 export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob> => {
 	const doc = new Document({
 		sections: [{
-			properties: {},
+			properties: {
+				page: {
+					pageNumbers: {
+						start: 1,
+						formatType: NumberFormat.DECIMAL,
+					},
+				},
+			},
+			headers: {
+				default: new Header({
+					children: [
+						new Paragraph({
+							children: [
+								new TextRun({
+									text: 'Post-Money SAFE - Valuation Cap Only',
+									font: 'Times New Roman',
+									size: 24,
+									bold: true
+								})
+							],
+							alignment: AlignmentType.CENTER
+						})
+					]
+				})
+			},
+			footers: {
+				default: new Footer({
+					children: [
+						new Paragraph({
+							alignment: AlignmentType.CENTER,
+							children: [
+								new TextRun({
+									text: 'Page ',
+									font: 'Times New Roman',
+									size: 20
+								}),
+								new TextRun({
+									children: [PageNumber.CURRENT],
+									font: 'Times New Roman',
+									size: 20
+								})
+							]
+						})
+					]
+				})
+			},
 			children: [
 				// Disclaimer
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES.  THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED IN THIS SAFE AND UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+							text: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "'
+						}),
+						new TextRun({
+							text: 'SECURITIES ACT',
 							bold: true
+						}),
+						new TextRun({
+							text: '"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES.  THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED IN THIS SAFE AND UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM'
 						})
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					alignment: AlignmentType.JUSTIFIED
 				}),
 
 				// Company Name
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: state.companyInfo.legalName || '[COMPANY NAME]',
-							bold: true
+							text: state.companyInfo.legalName || '_________________'
 						})
 					],
 					alignment: AlignmentType.CENTER,
@@ -43,7 +94,7 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					alignment: AlignmentType.CENTER,
 					spacing: {
-						after: 200
+						after: 25
 					}
 				}),
 
@@ -64,11 +115,14 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `THIS CERTIFIES THAT in exchange for the payment by ${state.investorInfo.investorLegalName || '[Investor Name]'} (the "Investor") of $${state.investorInfo.investmentAmount || '[_____________]'} (the "Purchase Amount") on or about ${state.investorInfo.investDate || '[Date of Safe]'}, ${state.companyInfo.legalName || '[Company Name]'}, a ${state.companyInfo.stateOfIncorporation || '[State of Incorporation]'} corporation (the "Company"), issues to the Investor the right to certain shares of the Company's Capital Stock, subject to the terms described below.`
+							text: `THIS CERTIFIES THAT in exchange for the payment by ${state.investorInfo.investorLegalName || '_________________'} (the "Investor") of $${state.investorInfo.investmentAmount || '_________________'} (the "Purchase Amount") on or about ${state.investorInfo.investDate || '_________________'}, ${state.companyInfo.legalName || '_________________'}, a ${state.companyInfo.stateOfIncorporation || '_________________'} corporation (the "Company"), issues to the Investor the right to certain shares of the Company's Capital Stock, subject to the terms described below.`
 						})
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -81,6 +135,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -88,11 +145,14 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `The "Post-Money Valuation Cap" is $${state.valuationCap || '[_____________]'}.  See Section 2 for certain additional defined terms.`
+							text: `The "Post-Money Valuation Cap" is $${state.valuationCap || '_________________'}.  See Section 2 for certain additional defined terms.`
 						})
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -118,6 +178,23 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'In connection with the automatic conversion of this Safe into shares of Standard Preferred Stock or Safe Preferred Stock, the Investor will execute and deliver to the Company all of the transaction documents related to the Equity Financing; provided, that such documents (i) are the same documents to be entered into with the purchasers of Standard Preferred Stock, with appropriate variations for the Safe Preferred Stock if applicable, and (ii) have customary exceptions to any drag-along applicable to the Investor, including (without limitation) limited representations, warranties, liability and indemnification obligations for the Investor.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -129,11 +206,28 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 							bold: true
 						}),
 						new TextRun({
-							text: 'If there is a Liquidity Event before the termination of this Safe, the Investor will automatically be entitled (subject to the liquidation priority set forth in Section 1(d) below) to receive a portion of Proceeds, due and payable to the Investor immediately prior to, or concurrent with, the consummation of such Liquidity Event, equal to the greater of (i) the Purchase Amount (the "Cash-Out Amount") or (ii) the amount payable on the number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price (the "Conversion Amount").'
+							text: 'If there is a Liquidity Event before the termination of this Safe, the Investor will automatically be entitled (subject to the liquidation priority set forth in Section 1(d) below) to receive a portion of Proceeds, due and payable to the Investor immediately prior to, or concurrent with, the consummation of such Liquidity Event, equal to the greater of (i) the Purchase Amount (the "Cash-Out Amount") or (ii) the amount payable on the number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price (the "Conversion Amount"). If any of the Company\'s securityholders are given a choice as to the form and amount of Proceeds to be received in a Liquidity Event, the Investor will be given the same choice, provided that the Investor may not choose to receive a form of consideration that the Investor would be ineligible to receive as a result of the Investor\'s failure to satisfy any requirement or limitation generally applicable to the Company\'s securityholders, or under any applicable laws.'
 						})
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Notwithstanding the foregoing, in connection with a Change of Control intended to qualify as a tax-free reorganization, the Company may reduce the cash portion of Proceeds payable to the Investor by the amount determined by its board of directors in good faith for such Change of Control to qualify as a tax-free reorganization for U.S. federal income tax purposes, provided that such reduction (A) does not reduce the total Proceeds payable to such Investor and (B) is applied in the same manner and on a pro rata basis to all securityholders who have equal priority to the Investor under Section 1(d).'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -150,6 +244,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -166,6 +263,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -187,7 +287,7 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '(ii) On par with payments for other Safes and/or Preferred Stock, and if the applicable Proceeds are insufficient to permit full payments to the Investor and such other Safes and/or Preferred Stock, the applicable Proceeds will be distributed pro rata to the Investor and such other Safes and/or Preferred Stock in proportion to the full payments that would otherwise be due; and'
+							text: '(ii) On par with payments for other Safes and/or Preferred Stock, and if the applicable Proceeds are insufficient to permit full payments to the Investor and such other Safes and/or Preferred Stock, the applicable Proceeds will be distributed pro rata to the Investor and such other Safes and/or Preferred Stock in proportion to the full payments that would otherwise be due;'
 						})
 					],
 					indent: {
@@ -212,6 +312,20 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					}
 				}),
 
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'The Investor\'s right to receive its Conversion Amount is (A) on par with payments for Common Stock and other Safes and/or Preferred Stock who are also receiving Conversion Amounts or Proceeds on a similar as-converted to Common Stock basis, and (B) junior to payments described in clauses (i) and (ii) above (in the latter case, to the extent such payments are Cash-Out Amounts or similar liquidation preferences).'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
 				// Section 1(e): Termination
 				new Paragraph({
 					children: [
@@ -225,6 +339,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -246,6 +363,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -257,10 +377,264 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
-				// Continue with more definitions...
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Company Capitalization" is calculated as of immediately prior to the Equity Financing and (without double-counting, in each case calculated on an as-converted to Common Stock basis):'
+						})
+					],
+					spacing: {
+						after: 200
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all shares of Capital Stock issued and outstanding;'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all Converting Securities;'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all (i) issued and outstanding Options and (ii) Promised Options; and'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes the Unissued Option Pool, except that any increase to the Unissued Option Pool in connection with the Equity Financing will only be included to the extent that the number of Promised Options exceeds the Unissued Option Pool prior to such increase.'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 400
+					}
+				}),
+
+				// Additional Definitions
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Direct Listing" means the Company\'s initial listing of its Common Stock (other than shares of Common Stock not eligible for resale under Rule 144 under the Securities Act) on a national securities exchange by means of an effective registration statement on Form S-1 filed by the Company with the SEC that registers shares of existing capital stock of the Company for resale, as approved by the Company\'s board of directors. For the avoidance of doubt, a Direct Listing will not be deemed to be an underwritten offering and will not involve any underwriting services.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Dividend Amount" means, with respect to any date on which the Company pays a dividend on its outstanding Common Stock, the amount of such dividend that is paid per share of Common Stock multiplied by (x) the Purchase Amount divided by (y) the Liquidity Price (treating the dividend date as a Liquidity Event solely for purposes of calculating such Liquidity Price).'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Initial Public Offering" means the closing of the Company\'s first firm commitment underwritten initial public offering of Common Stock pursuant to a registration statement filed under the Securities Act.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Liquidity Capitalization" is calculated as of immediately prior to the Liquidity Event, and (without double-counting, in each case calculated on an as-converted to Common Stock basis):'
+						})
+					],
+					spacing: {
+						after: 200
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all shares of Capital Stock issued and outstanding;'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all (i) issued and outstanding Options and (ii) to the extent receiving Proceeds, Promised Options;'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Includes all Converting Securities, other than any Safes and other convertible securities (including without limitation shares of Preferred Stock) where the holders of such securities are receiving Cash-Out Amounts or similar liquidation preference payments in lieu of Conversion Amounts or similar "as-converted" payments; and'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 200
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Excludes the Unissued Option Pool.'
+						})
+					],
+					indent: {
+						left: 720
+					},
+					spacing: {
+						after: 400
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Options" includes options, restricted stock awards or purchases, RSUs, SARs, warrants or similar securities, vested or unvested.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Promised Options" means promised but ungranted Options that are the greater of those (i) promised pursuant to agreements or understandings made prior to the execution of, or in connection with, the term sheet or letter of intent for the Equity Financing or Liquidity Event, as applicable (or the initial closing of the Equity Financing or consummation of the Liquidity Event, if there is no term sheet or letter of intent), (ii) in the case of an Equity Financing, treated as outstanding Options in the calculation of the Standard Preferred Stock\'s price per share, or (iii) in the case of a Liquidity Event, treated as outstanding Options in the calculation of the distribution of the Proceeds.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Safe Preferred Stock" means the shares of the series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences, seniority, liquidation multiple and restrictions as the shares of Standard Preferred Stock, except that any price-based preferences (such as the per share liquidation amount, initial conversion price and per share dividend amount) will be based on the Safe Price.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Standard Preferred Stock" means the shares of the series of Preferred Stock issued to the investors investing new money in the Company in connection with the initial closing of the Equity Financing.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"Unissued Option Pool" means all shares of Capital Stock that are reserved, available for future grant and not subject to any outstanding Options or Promised Options (but in the case of a Liquidity Event, only to the extent Proceeds are payable on such Promised Options) under any equity incentive or similar Company plan.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
 
 				// Section 3: Company Representations
 				new Paragraph({
@@ -284,6 +658,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -300,6 +677,64 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(c) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'The performance and consummation of the transactions contemplated by this Safe do not and will not: (i) violate any material judgment, statute, rule or regulation applicable to the Company; (ii) result in the acceleration of any material debt or contract to which the Company is a party or by which it is bound; or (iii) result in the creation or imposition of any lien on any property, asset or revenue of the Company or the suspension, forfeiture, or nonrenewal of any material permit, license or authorization applicable to the Company, its business or operations.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				// Additional Company Representations
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(d) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'No consents or approvals are required in connection with the performance of this Safe, other than: (i) the Company\'s corporate approvals; (ii) any qualifications or filings under applicable securities laws; and (iii) necessary corporate approvals for the authorization of Capital Stock issuable pursuant to Section 1.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(e) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'To its knowledge, the Company owns or possesses (or can obtain on commercially reasonable terms) sufficient legal rights to all patents, trademarks, service marks, trade names, copyrights, trade secrets, licenses, information, processes and other intellectual property rights necessary for its business as now conducted and as currently proposed to be conducted, without any conflict with, or infringement of the rights of, others.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -325,6 +760,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -341,6 +779,24 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					],
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				// Additional Investor Representations
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'The Investor has been advised that this Safe and the underlying securities have not been registered under the Securities Act, or any state securities laws and, therefore, cannot be resold unless they are registered under the Securities Act and applicable state securities laws or unless an exemption from such registration requirements is available. The Investor is purchasing this Safe and the securities to be acquired by the Investor hereunder for its own account for investment, not as a nominee or agent, and not with a view to, or for resale in connection with, the distribution thereof, and the Investor has no present intention of selling, granting any participation in, or otherwise distributing the same. The Investor has such knowledge and experience in financial and business matters that the Investor is capable of evaluating the merits and risks of such investment, is able to incur a complete loss of such investment without impairing the Investor\'s financial condition and is able to bear the economic risk of such investment for an indefinite period of time.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -353,11 +809,146 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					}
 				}),
 
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(a) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'Any provision of this Safe may be amended, waived or modified by written consent of the Company and either (i) the Investor or (ii) the majority-in-interest of all then-outstanding Safes with the same "Post-Money Valuation Cap" and "Discount Rate" as this Safe (and Safes lacking one or both of such terms will be considered to be the same with respect to such term(s)), provided that with respect to clause (ii): (A) the Purchase Amount may not be amended, waived or modified in this manner, (B) the consent of the Investor and each holder of such Safes must be solicited (even if not obtained), and (C) such amendment, waiver or modification treats all such holders in the same manner. "Majority-in-interest" refers to the holders of the applicable group of Safes whose Safes have a total Purchase Amount greater than 50% of the total Purchase Amount of all of such applicable group of Safes.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				// Additional Miscellaneous Sections
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(b) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'Any notice required or permitted by this Safe will be deemed sufficient when delivered personally or by overnight courier or sent by email to the relevant address listed on the signature page, or 48 hours after being deposited in the U.S. mail as certified or registered mail with postage prepaid, addressed to the party to be notified at such party\'s address listed on the signature page, as subsequently modified by written notice.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(c) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'The Investor is not entitled, as a holder of this Safe, to vote or be deemed a holder of Capital Stock for any purpose other than tax purposes, nor will anything in this Safe be construed to confer on the Investor, as such, any rights of a Company stockholder or rights to vote for the election of directors or on any matter submitted to Company stockholders, or to give or withhold consent to any corporate action or to receive notice of meetings, until shares have been issued on the terms described in Section 1. However, if the Company pays a dividend on outstanding shares of Common Stock (that is not payable in shares of Common Stock) while this Safe is outstanding, the Company will pay the Dividend Amount to the Investor at the same time.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(d) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'Neither this Safe nor the rights in this Safe are transferable or assignable, by operation of law or otherwise, by either party without the prior written consent of the other; provided, however, that this Safe and/or its rights may be assigned without the Company\'s consent by the Investor (i) to the Investor\'s estate, heirs, executors, administrators, guardians and/or successors in the event of Investor\'s death or disability, or (ii) to any other entity who directly or indirectly, controls, is controlled by or is under common control with the Investor, including, without limitation, any general partner, managing member, officer or director of the Investor, or any venture capital fund now or hereafter existing which is controlled by one or more general partners or managing members of, or shares the same management company with, the Investor.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(e) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'In the event any one or more of the provisions of this Safe is for any reason held to be invalid, illegal or unenforceable, in whole or in part or in any respect, or in the event that any one or more of the provisions of this Safe operate or would prospectively operate to invalidate this Safe, then and in any such event, such provision(s) only will be deemed null and void and will not affect any other provision of this Safe and the remaining provisions of this Safe will remain operative and in full force and effect and will not be affected, prejudiced, or disturbed thereby.'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(f) ',
+							bold: true
+						}),
+						new TextRun({
+							text: `All rights and obligations hereunder will be governed by the laws of the State of ${state.governingLawJurisdiction || '_________________'}, without regard to the conflicts of law provisions of such jurisdiction.`
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(g) ',
+							bold: true
+						}),
+						new TextRun({
+							text: 'The parties acknowledge and agree that for United States federal and state income tax purposes this Safe is, and at all times has been, intended to be characterized as stock, and more particularly as common stock for purposes of Sections 304, 305, 306, 354, 368, 1036 and 1202 of the Internal Revenue Code of 1986, as amended. Accordingly, the parties agree to treat this Safe consistent with the foregoing intent for all United States federal and state income tax purposes (including, without limitation, on their respective tax returns or other informational statements).'
+						})
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 720
+					}
+				}),
+
+				// Add page break before signature section
+				new Paragraph({
+					children: [new PageBreak()]
+				}),
+
 				// Signature Section
 				new Paragraph({
 					text: 'IN WITNESS WHEREOF, the undersigned have caused this Safe to be duly executed and delivered.',
 					spacing: {
 						after: 400
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -366,6 +957,9 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					text: '[COMPANY]',
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -373,58 +967,80 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					text: 'By:',
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Name: ${state.companyInfo.authorizedSignatoryName || '[name]'}`
+							text: `Name: ${state.companyInfo.authorizedSignatoryName || '_________________'}`
 						})
 					],
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
+
+				...(state.companyInfo.authorizedSignatoryTitle ? [
+					new Paragraph({
+						children: [
+							new TextRun({
+								text: `Title: ${state.companyInfo.authorizedSignatoryTitle}`
+							})
+						],
+						spacing: {
+							after: 200
+						},
+						indent: {
+							firstLine: 720
+						}
+					})
+				] : []),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Title: ${state.companyInfo.authorizedSignatoryTitle || '[title]'}`
+							text: `Address: ${state.companyInfo.companyAddress || '_________________'}`
 						})
 					],
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
-				new Paragraph({
-					children: [
-						new TextRun({
-							text: `Address: ${state.companyInfo.companyAddress || '[address]'}`
-						})
-					],
-					spacing: {
-						after: 200
-					}
-				}),
-
-				new Paragraph({
-					children: [
-						new TextRun({
-							text: `Email: ${state.companyInfo.authorizedSignatoryEmail || '[email]'}`
-						})
-					],
-					spacing: {
-						after: 400
-					}
-				}),
+				...(state.companyInfo.authorizedSignatoryEmail ? [
+					new Paragraph({
+						children: [
+							new TextRun({
+								text: `Email: ${state.companyInfo.authorizedSignatoryEmail}`
+							})
+						],
+						spacing: {
+							after: 200
+						},
+						indent: {
+							firstLine: 720
+						}
+					})
+				] : []),
 
 				// Investor Signature
 				new Paragraph({
 					text: 'INVESTOR:',
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
@@ -432,52 +1048,73 @@ export const generatePostMoneySafe = async (state: SafeFormState): Promise<Blob>
 					text: 'By:',
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Name: ${state.investorInfo.authorizedSignatoryName || '[name]'}`
+							text: `Name: ${state.investorInfo.authorizedSignatoryName || state.investorInfo.investorLegalName || '_________________'}`
 						})
 					],
 					spacing: {
 						after: 200
+					},
+					indent: {
+						firstLine: 720
 					}
 				}),
 
-				new Paragraph({
-					children: [
-						new TextRun({
-							text: `Title: ${state.investorInfo.authorizedSignatoryTitle || '[title]'}`
-						})
-					],
-					spacing: {
-						after: 200
-					}
-				}),
+				...(state.investorInfo.authorizedSignatoryTitle ? [
+					new Paragraph({
+						children: [
+							new TextRun({
+								text: `Title: ${state.investorInfo.authorizedSignatoryTitle}`
+							})
+						],
+						spacing: {
+							after: 200
+						},
+						indent: {
+							firstLine: 720
+						}
+					})
+				] : []),
 
-				new Paragraph({
-					children: [
-						new TextRun({
-							text: `Address: ${state.investorInfo.investorAddress || '[address]'}`
-						})
-					],
-					spacing: {
-						after: 200
-					}
-				}),
+				...(state.investorInfo.investorAddress ? [
+					new Paragraph({
+						children: [
+							new TextRun({
+								text: `Address: ${state.investorInfo.investorAddress}`
+							})
+						],
+						spacing: {
+							after: 200
+						},
+						indent: {
+							firstLine: 720
+						}
+					})
+				] : []),
 
-				new Paragraph({
-					children: [
-						new TextRun({
-							text: `Email: ${state.investorInfo.authorizedSignatoryEmail || '[email]'}`
-						})
-					],
-					spacing: {
-						after: 200
-					}
-				})
+				...(state.investorInfo.authorizedSignatoryEmail ? [
+					new Paragraph({
+						children: [
+							new TextRun({
+								text: `Email: ${state.investorInfo.authorizedSignatoryEmail}`
+							})
+						],
+						spacing: {
+							after: 200
+						},
+						indent: {
+							firstLine: 720
+						}
+					})
+				] : [])
 			]
 		}]
 	})
