@@ -1049,18 +1049,12 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
 					text: 'By:',
 					spacing: {
 						after: 50,
-					},
-					indent: {
-						firstLine: 500,
 					},
 				}),
 
@@ -1076,9 +1070,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
@@ -1092,9 +1083,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					],
 					spacing: {
 						after: 200,
-					},
-					indent: {
-						firstLine: 500,
 					},
 				}),
 
@@ -1110,9 +1098,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
@@ -1127,9 +1112,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 400,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				// Investor Signature
@@ -1143,18 +1125,12 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
 					text: 'By:',
 					spacing: {
 						after: 50,
-					},
-					indent: {
-						firstLine: 500,
 					},
 				}),
 
@@ -1171,9 +1147,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 50,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
@@ -1187,9 +1160,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					],
 					spacing: {
 						after: 200,
-					},
-					indent: {
-						firstLine: 500,
 					},
 				}),
 
@@ -1205,9 +1175,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					spacing: {
 						after: 200,
 					},
-					indent: {
-						firstLine: 500,
-					},
 				}),
 
 				new Paragraph({
@@ -1221,9 +1188,6 @@ export const generatePreMoneySafe = async (state: SafeFormState): Promise<Blob> 
 					],
 					spacing: {
 						after: 200,
-					},
-					indent: {
-						firstLine: 500,
 					},
 				}),
 			],
