@@ -2,7 +2,7 @@
 
 import { useSafeForm } from "@/context/SafeFormContext";
 import styles from "../SafeForm.module.css";
-import React from "react";
+import React, { useState } from "react";
 
 const US_STATES = [
   "Alabama",
@@ -59,6 +59,7 @@ const US_STATES = [
 
 export default function CompanyStep() {
   const { state, updateCompanyInfo, updateStep } = useSafeForm();
+  const [emailError, setEmailError] = useState<string>('');
 
   // Initialize state values with defaults when component mounts
   React.useEffect(() => {
@@ -69,6 +70,27 @@ export default function CompanyStep() {
       updateCompanyInfo({ stateOfGovernance: "Delaware" });
     }
   }, [state.companyInfo.stateOfIncorporation, state.companyInfo.stateOfGovernance, updateCompanyInfo]);
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    updateCompanyInfo({ authorizedSignatoryEmail: email });
+
+    if (!email) {
+      setEmailError('');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError('');
+    }
+  };
 
   const handleContinue = () => {
     const {
@@ -88,7 +110,8 @@ export default function CompanyStep() {
       companyAddress &&
       authorizedSignatoryName &&
       authorizedSignatoryTitle &&
-      authorizedSignatoryEmail
+      authorizedSignatoryEmail &&
+      validateEmail(authorizedSignatoryEmail)
     ) {
       updateStep(4);
     }
@@ -234,16 +257,15 @@ export default function CompanyStep() {
         <input
           type="email"
           id="authorizedSignatoryEmail"
-          className={styles.input}
+          className={`${styles.input} ${emailError ? styles.inputError : ''}`}
           value={state.companyInfo.authorizedSignatoryEmail || ""}
-          onChange={(e) =>
-            updateCompanyInfo({
-              authorizedSignatoryEmail: e.target.value,
-            })
-          }
+          onChange={handleEmailChange}
           placeholder="Enter authorized signatory email"
           required
         />
+        {emailError && (
+          <span className={styles.errorMessage}>{emailError}</span>
+        )}
       </div>
 
       <div className={styles.buttonGroup}>
@@ -263,7 +285,8 @@ export default function CompanyStep() {
             !state.companyInfo.companyAddress ||
             !state.companyInfo.authorizedSignatoryName ||
             !state.companyInfo.authorizedSignatoryTitle ||
-            !state.companyInfo.authorizedSignatoryEmail
+            !state.companyInfo.authorizedSignatoryEmail ||
+            !!emailError
           }
         >
           Continue
