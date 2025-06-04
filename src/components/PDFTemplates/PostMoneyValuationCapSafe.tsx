@@ -83,7 +83,7 @@ export default function PostMoneyValuationCapSafe({ state }: PostMoneyValuationC
 
 				{/* Title */}
 				<Text style={styles.title}>SAFE</Text>
-				<Text style={[styles.title, { marginBottom: 40 }]}>
+				<Text style={[styles.title, { fontStyle: 'italic', fontSize: 10, fontWeight: '400' }]}>
 					(Simple Agreement for Future Equity)
 				</Text>
 
