@@ -1,36 +1,109 @@
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx'
+import {
+	Document,
+	Packer,
+	Paragraph,
+	TextRun,
+	AlignmentType,
+	Header,
+	Footer,
+	PageNumber,
+	NumberFormat,
+	PageBreak,
+} from 'docx'
 import { SafeFormState } from '@/types/safeForm'
+
+const formatCurrency = (amount: number) => {
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0
+	}).format(amount)
+}
 
 export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFormState): Promise<Blob> => {
 	const doc = new Document({
 		sections: [{
-			properties: {},
+			properties: {
+				page: {
+					pageNumbers: {
+						start: 1,
+						formatType: NumberFormat.DECIMAL,
+					},
+				},
+			},
+			headers: {
+				default: new Header({
+					children: [
+						new Paragraph({
+							children: [
+								new TextRun({
+									text: 'Pre-Money SAFE - Valuation Cap and Discount',
+									font: 'Times New Roman',
+									size: 24,
+									bold: true,
+								}),
+							],
+							alignment: AlignmentType.CENTER,
+						}),
+					],
+				}),
+			},
+			footers: {
+				default: new Footer({
+					children: [
+						new Paragraph({
+							alignment: AlignmentType.CENTER,
+							children: [
+								new TextRun({
+									text: 'Page ',
+									font: 'Times New Roman',
+									size: 20,
+								}),
+								new TextRun({
+									children: [PageNumber.CURRENT],
+									font: 'Times New Roman',
+									size: 20,
+								}),
+							],
+						}),
+					],
+				}),
+			},
 			children: [
 				// Disclaimer
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "SECURITIES ACT"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES.  THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
-							bold: true
-						})
+							text: 'THIS INSTRUMENT AND ANY SECURITIES ISSUABLE PURSUANT HERETO HAVE NOT BEEN REGISTERED UNDER THE SECURITIES ACT OF 1933, AS AMENDED (THE "',
+						}),
+						new TextRun({
+							text: 'SECURITIES ACT',
+							bold: true,
+						}),
+						new TextRun({
+							text: '"), OR UNDER THE SECURITIES LAWS OF CERTAIN STATES.  THESE SECURITIES MAY NOT BE OFFERED, SOLD OR OTHERWISE TRANSFERRED, PLEDGED OR HYPOTHECATED EXCEPT AS PERMITTED UNDER THE ACT AND APPLICABLE STATE SECURITIES LAWS PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT OR AN EXEMPTION THEREFROM.',
+						}),
 					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					alignment: AlignmentType.JUSTIFIED,
 				}),
 
 				// Company Name
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: state.companyInfo.legalName || '[COMPANY NAME]',
-							bold: true
-						})
+							text: state.companyInfo.legalName || '_________________',
+							bold: true,
+							size: 22,
+						}),
 					],
 					alignment: AlignmentType.CENTER,
 					spacing: {
-						after: 400
-					}
+						after: 400,
+					},
 				}),
 
 				// Title
@@ -38,59 +111,154 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					children: [
 						new TextRun({
 							text: 'SAFE',
-							bold: true
-						})
+							bold: true,
+							size: 22,
+						}),
 					],
 					alignment: AlignmentType.CENTER,
 					spacing: {
-						after: 200
-					}
+						after: 25,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
 							text: '(Simple Agreement for Future Equity)',
-							italics: true
-						})
+							bold: true,
+							size: 22,
+						}),
 					],
 					alignment: AlignmentType.CENTER,
 					spacing: {
-						after: 400
-					}
+						after: 400,
+					},
 				}),
 
 				// Introduction
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `THIS CERTIFIES THAT in exchange for the payment by ${state.investorInfo.investorLegalName || '[Investor Name]'} (the "Investor") of $${state.investorInfo.investmentAmount || '[_____________]'} (the "Purchase Amount") on or about ${state.investorInfo.investDate || '[Date of Safe]'}, ${state.companyInfo.legalName || '[Company Name]'}, a ${state.companyInfo.stateOfIncorporation || '[State of Incorporation]'} corporation (the "Company"), hereby issues to the Investor the right to certain shares of the Company's capital stock, subject to the terms set forth below.`
-						})
+							text: `THIS CERTIFIES THAT in exchange for the payment by ${
+								state.investorInfo.investorLegalName || '_________________'
+							} (the "`,
+						}),
+						new TextRun({
+							text: 'Investor',
+							bold: true,
+						}),
+						new TextRun({
+							text: `") of ${
+								state.investorInfo.investmentAmount 
+									? formatCurrency(state.investorInfo.investmentAmount)
+									: '_________________'
+							} (the "`,
+						}),
+						new TextRun({
+							text: 'Purchase Amount',
+							bold: true,
+						}),
+						new TextRun({
+							text: `") on or about ${state.investorInfo.investDate || '_________________'}, ${
+								state.companyInfo.legalName || '_________________'
+							}, a ${state.companyInfo.stateOfIncorporation || '_________________'} corporation (the "`,
+						}),
+						new TextRun({
+							text: 'Company',
+							bold: true,
+						}),
+						new TextRun({
+							text: '"), hereby issues to the Investor the right to certain shares of the Company\'s capital stock, subject to the terms set forth below.',
+						}),
 					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Valuation Cap and Discount Rate
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `The "Valuation Cap" is $${state.valuationCap || '[_____________]'}.  The "Discount Rate" is ${state.discount || '[_____________]'}%.  See Section 2 for certain additional defined terms.`
+							text: 'The "',
+						}),
+						new TextRun({
+							text: 'Valuation Cap',
+							bold: true,
+						}),
+						new TextRun({
+							text: `" is ${state.valuationCap ? formatCurrency(state.valuationCap) : '_________________'}.`,
 						})
 					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'The "',
+						}),
+						new TextRun({
+							text: 'Discount Rate',
+							bold: true,
+						}),
+						new TextRun({
+							text: `" is ${100 - (state.discount || 0)}%.`,
+						})
+					],
+					spacing: {
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: "See ",
+						}),
+						new TextRun({
+							text: "Section 2",
+							bold: true,
+						}),
+						new TextRun({
+							text: " for certain additional defined terms.",
+						}),
+					],
+					spacing: {
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 1: Events
 				new Paragraph({
-					text: '1. Events',
-					heading: HeadingLevel.HEADING_1,
+					children: [
+						new TextRun({
+							text: '1. Events',
+							bold: true,
+							italics: true,
+							font: 'Times New Roman',
+						}),
+					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 1(a): Equity Financing
@@ -101,12 +269,15 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 							bold: true
 						}),
 						new TextRun({
-							text: 'If there is an Equity Financing before the expiration or termination of this instrument, the Company will automatically issue to the Investor a number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the lower of (i) the Discount Price and (ii) the Valuation Cap Price.'
+							text: 'If there is an Equity Financing before the expiration or termination of this instrument, the Company will automatically issue to the Investor a number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the Conversion Price.'
 						})
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Additional Equity Financing text
@@ -118,7 +289,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
@@ -157,24 +331,37 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 							bold: true
 						}),
 						new TextRun({
-							text: 'If there is a Liquidity Event before the expiration or termination of this instrument, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount (subject to the following paragraph) or (ii) automatically receive from the Company a number of shares of Common Stock equal to the Purchase Amount divided by the lower of (A) the Liquidity Price and (B) the Valuation Cap Price, if the Investor fails to select the cash option.'
+							text: 'If there is a Liquidity Event before the expiration or termination of this instrument, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount (subject to the following paragraph) or (ii) automatically receive from the Company a number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price, if the Investor fails to select the cash option.'
 						})
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Additional Liquidity Event text
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: 'In connection with Section (b)(i), the Purchase Amount will be due and payable by the Company to the Investor immediately prior to, or concurrent with, the consummation of the Liquidity Event. If there are not enough funds to pay the Investor and holders of other Safes (collectively, the "Cash-Out Investors") in full, then all of the Company\'s available funds will be distributed with equal priority and pro rata among the Cash-Out Investors in proportion to their Purchase Amounts, and the Cash-Out Investors will automatically receive the number of shares of Common Stock equal to the remaining unpaid Purchase Amount divided by the lower of (A) the Liquidity Price and (B) the Valuation Cap Price.  In connection with a Change of Control intended to qualify as a tax-free reorganization, the Company may reduce, pro rata, the Purchase Amounts payable to the Cash-Out Investors by the amount determined by its board of directors in good faith to be advisable for such Change of Control to qualify as a tax-free reorganization for U.S. federal income tax purposes, and in such case, the Cash-Out Investors will automatically receive the number of shares of Common Stock equal to the remaining unpaid Purchase Amount divided by the lower of (A) the Liquidity Price and (B) the Valuation Cap Price.'
-						})
+							text: 'In connection with Section (b)(i), the Purchase Amount will be due and payable by the Company to the Investor immediately prior to, or concurrent with, the consummation of the Liquidity Event. If there are not enough funds to pay the Investor and holders of other Safes (collectively, the "',
+						}),
+						new TextRun({
+							text: 'Cash-Out Investors',
+							bold: true,
+						}),
+						new TextRun({
+							text: '") in full, then all of the Company\'s available funds will be distributed with equal priority and pro rata among the Cash-Out Investors in proportion to their Purchase Amounts, and the Cash-Out Investors will automatically receive the number of shares of Common Stock equal to the remaining unpaid Purchase Amount divided by the Liquidity Price.  In connection with a Change of Control intended to qualify as a tax-free reorganization, the Company may reduce, pro rata, the Purchase Amounts payable to the Cash-Out Investors by the amount determined by its board of directors in good faith to be advisable for such Change of Control to qualify as a tax-free reorganization for U.S. federal income tax purposes, and in such case, the Cash-Out Investors will automatically receive the number of shares of Common Stock equal to the remaining unpaid Purchase Amount divided by the Liquidity Price.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 1(c): Dissolution Event
@@ -185,12 +372,22 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 							bold: true
 						}),
 						new TextRun({
-							text: 'If there is a Dissolution Event before this instrument expires or terminates, the Company will pay an amount equal to the Purchase Amount, due and payable to the Investor immediately prior to, or concurrent with, the consummation of the Dissolution Event. The Purchase Amount will be paid prior and in preference to any Distribution of any of the assets of the Company to holders of outstanding Capital Stock by reason of their ownership thereof. If immediately prior to the consummation of the Dissolution Event, the assets of the Company legally available for distribution to the Investor and all holders of all other Safes (the "Dissolving Investors"), as determined in good faith by the Company\'s board of directors, are insufficient to permit the payment to the Dissolving Investors of their respective Purchase Amounts, then the entire assets of the Company legally available for distribution will be distributed with equal priority and pro rata among the Dissolving Investors in proportion to the Purchase Amounts they would otherwise be entitled to receive pursuant to this Section 1(c).'
+							text: 'If there is a Dissolution Event before this instrument expires or terminates, the Company will pay an amount equal to the Purchase Amount, due and payable to the Investor immediately prior to, or concurrent with, the consummation of the Dissolution Event. The Purchase Amount will be paid prior and in preference to any Distribution of any of the assets of the Company to holders of outstanding Capital Stock by reason of their ownership thereof. If immediately prior to the consummation of the Dissolution Event, the assets of the Company legally available for distribution to the Investor and all holders of all other Safes (the "',
+						}),
+						new TextRun({
+							text: 'Dissolving Investors',
+							bold: true,
+						}),
+						new TextRun({
+							text: '"), as determined in good faith by the Company\'s board of directors, are insufficient to permit the payment to the Dissolving Investors of their respective Purchase Amounts, then the entire assets of the Company legally available for distribution will be distributed with equal priority and pro rata among the Dissolving Investors in proportion to the Purchase Amounts they would otherwise be entitled to receive pursuant to this Section 1(c).'
 						})
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 1(d): Termination
@@ -211,186 +408,424 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 
 				// Section 2: Definitions
 				new Paragraph({
-					text: '2. Definitions',
-					heading: HeadingLevel.HEADING_1,
+					children: [
+						new TextRun({
+							text: '2. Definitions',
+							bold: true,
+							italics: true,
+							font: 'Times New Roman',
+						}),
+					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Definitions
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Capital Stock" means the capital stock of the Company, including, without limitation, the "Common Stock" and the "Preferred Stock."'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Capital Stock',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the capital stock of the Company, including, without limitation, the "',
+						}),
+						new TextRun({
+							text: 'Common Stock',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" and the "',
+						}),
+						new TextRun({
+							text: 'Preferred Stock',
+							bold: true,
+						}),
+						new TextRun({
+							text: '."',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Change of Control" means (i) a transaction or series of related transactions in which any "person" or "group" (within the meaning of Section 13(d) and 14(d) of the Securities Exchange Act of 1934, as amended), becomes the "beneficial owner" (as defined in Rule 13d-3 under the Securities Exchange Act of 1934, as amended), directly or indirectly, of more than 50% of the outstanding voting securities of the Company having the right to vote for the election of members of the Company\'s board of directors, (ii) any reorganization, merger or consolidation of the Company, other than a transaction or series of related transactions in which the holders of the voting securities of the Company outstanding immediately prior to such transaction or series of related transactions retain, immediately after such transaction or series of related transactions, at least a majority of the total voting power represented by the outstanding voting securities of the Company or such other surviving or resulting entity or (iii) a sale, lease or other disposition of all or substantially all of the assets of the Company.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Change of Control',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means (i) a transaction or series of related transactions in which any "person" or "group" (within the meaning of Section 13(d) and 14(d) of the Securities Exchange Act of 1934, as amended), becomes the "beneficial owner" (as defined in Rule 13d-3 under the Securities Exchange Act of 1934, as amended), directly or indirectly, of more than 50% of the outstanding voting securities of the Company having the right to vote for the election of members of the Company\'s board of directors, (ii) any reorganization, merger or consolidation of the Company, other than a transaction or series of related transactions in which the holders of the voting securities of the Company outstanding immediately prior to such transaction or series of related transactions retain, immediately after such transaction or series of related transactions, at least a majority of the total voting power represented by the outstanding voting securities of the Company or such other surviving or resulting entity or (iii) a sale, lease or other disposition of all or substantially all of the assets of the Company.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Discount Price" means the price per share of the Standard Preferred Stock sold in the Equity Financing multiplied by the Discount Rate.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Company Capitalization',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the ',
+						}),
+						new TextRun({
+							text: 'sum',
+							bold: true,
+						}),
+						new TextRun({
+							text: ', as of immediately prior to the Equity Financing, of: (1) all shares of Capital Stock (on an as-converted basis) issued and outstanding, assuming exercise or conversion of all outstanding vested and unvested options, warrants and other convertible securities, but excluding (A) this instrument, (B) all other Safes, and (C) convertible promissory notes; ',
+						}),
+						new TextRun({
+							text: 'and (2)',
+							bold: true,
+						}),
+						new TextRun({
+							text: ' all shares of Common Stock reserved and available for future grant under any equity incentive or similar plan of the Company, and/or any equity incentive or similar plan to be created or increased in connection with the Equity Financing.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Distribution" means the transfer to holders of Capital Stock by reason of their ownership thereof of cash or other property without consideration whether by way of dividend or otherwise, other than dividends on Common Stock payable in Common Stock, or the purchase or redemption of Capital Stock by the Company or its subsidiaries for cash or property other than: (i) repurchases of Common Stock held by employees, officers, directors or consultants of the Company or its subsidiaries pursuant to an agreement providing, as applicable, a right of first refusal or a right to repurchase shares upon termination of such service provider\'s employment or services; or (ii) repurchases of Capital Stock in connection with the settlement of disputes with any stockholder.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Conversion Price',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the either: (1) the Safe Price or (2) the Discount Price, whichever calculation results in a greater number of shares of Safe Preferred Stock.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Dissolution Event" means (i) a voluntary termination of operations, (ii) a general assignment for the benefit of the Company\'s creditors or (iii) any other liquidation, dissolution or winding up of the Company (excluding a Liquidity Event), whether voluntary or involuntary.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Discount Price',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the price per share of the Standard Preferred Stock sold in the Equity Financing multiplied by the Discount Rate.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Equity Financing" means a bona fide transaction or series of transactions with the principal purpose of raising capital, pursuant to which the Company issues and sells Preferred Stock at a fixed pre-money valuation.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Distribution',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the transfer to holders of Capital Stock by reason of their ownership thereof of cash or other property without consideration whether by way of dividend or otherwise, other than dividends on Common Stock payable in Common Stock, or the purchase or redemption of Capital Stock by the Company or its subsidiaries for cash or property other than: (i) repurchases of Common Stock held by employees, officers, directors or consultants of the Company or its subsidiaries pursuant to an agreement providing, as applicable, a right of first refusal or a right to repurchase shares upon termination of such service provider\'s employment or services; or (ii) repurchases of Capital Stock in connection with the settlement of disputes with any stockholder.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Initial Public Offering" means the closing of the Company\'s first firm commitment underwritten initial public offering of Common Stock pursuant to a registration statement filed under the Securities Act.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Dissolution Event',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means (i) a voluntary termination of operations, (ii) a general assignment for the benefit of the Company\'s creditors or (iii) any other liquidation, dissolution or winding up of the Company (excluding a Liquidity Event), whether voluntary or involuntary.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Liquidity Event" means a Change of Control or an Initial Public Offering.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Equity Financing',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means a bona fide transaction or series of transactions with the principal purpose of raising capital, pursuant to which the Company issues and sells Preferred Stock at a fixed pre-money valuation.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Liquidity Price" means the price per share equal to: the fair market value of the Common Stock at the time of the Liquidity Event, as determined by reference to the purchase price payable in connection with such Liquidity Event, multiplied by the Discount Rate.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Initial Public Offering',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the closing of the Company\'s first firm commitment underwritten initial public offering of Common Stock pursuant to a registration statement filed under the Securities Act.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Pro Rata Rights Agreement" means a written agreement between the Company and the Investor (and holders of other Safes, as appropriate) giving the Investor a right to purchase its pro rata share of private placements of securities by the Company occurring after the Equity Financing, subject to customary exceptions.  Pro rata for purposes of the Pro Rata Rights Agreement will be calculated based on the ratio of (1) the number of shares of Capital Stock owned by the Investor immediately prior to the issuance of the securities to (2) the total number of shares of outstanding Capital Stock on a fully diluted basis, calculated as of immediately prior to the issuance of the securities.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Liquidity Capitalization',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the number, as of immediately prior to the Liquidity Event, of shares of Capital Stock (on an as-converted basis) outstanding, assuming exercise or conversion of all outstanding vested and unvested options, warrants and other convertible securities, but excluding: (i) shares of Common Stock reserved and available for future grant under any equity incentive or similar plan; (ii) this instrument; (iii) other Safes; and (iv) convertible promissory notes.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Safe" means an instrument containing a future right to shares of Capital Stock, similar in form and content to this instrument, purchased by investors for the purpose of funding the Company\'s business operations.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Liquidity Event',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means a Change of Control or an Initial Public Offering.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Safe Preferred Stock" means the shares of a series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences and restrictions as the shares of Standard Preferred Stock, other than with respect to: (i) the per share liquidation preference and the conversion price for purposes of price-based anti-dilution protection, which will equal the lower of the Discount Price and the Valuation Cap Price; and (ii) the basis for any dividend rights, which will be based on the lower of the Discount Price and the Valuation Cap Price.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Liquidity Price',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the price per share equal to the Valuation Cap divided by the Liquidity Capitalization.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Standard Preferred Stock" means the shares of a series of Preferred Stock issued to the investors investing new money in the Company in connection with the initial closing of the Equity Financing.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Pro Rata Rights Agreement',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means a written agreement between the Company and the Investor (and holders of other Safes, as appropriate) giving the Investor a right to purchase its pro rata share of private placements of securities by the Company occurring after the Equity Financing, subject to customary exceptions.  Pro rata for purposes of the Pro Rata Rights Agreement will be calculated based on the ratio of (1) the number of shares of Capital Stock owned by the Investor immediately prior to the issuance of the securities to (2) the total number of shares of outstanding Capital Stock on a fully diluted basis, calculated as of immediately prior to the issuance of the securities.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Valuation Cap Price" means the price per share equal to the Valuation Cap divided by the Company Capitalization.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Safe',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means an instrument containing a future right to shares of Capital Stock, similar in form and content to this instrument, purchased by investors for the purpose of funding the Company\'s business operations.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: '"Company Capitalization" means the number, as of immediately prior to the Equity Financing, of shares of the Company\'s capital stock (on an as-converted basis) outstanding, assuming exercise or conversion of all outstanding vested and unvested options, warrants and other convertible securities, but excluding: (i) this instrument and other Safes; and (ii) convertible promissory notes; and (iii) any convertible securities that have antidilution protection (with the narrowest weighted average antidilution protection applicable to such shares ("Narrowest WA Antidilution Protection")), in which case the applicable price per share and number of shares of Standard Preferred Stock of the Company sold in the Equity Financing will be the lowest price per share and largest number of shares, respectively, at which such security would convert or be converted into Standard Preferred Stock of the Company pursuant to such Narrowest WA Antidilution Protection, in the case of both (i) and (ii) excluding any such instruments, notes and securities that have converted or terminated or expired prior to the Equity Financing.'
-						})
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Safe Preferred Stock',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the shares of a series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences and restrictions as the shares of Standard Preferred Stock, other than with respect to: (i) the per share liquidation preference and the conversion price for purposes of price-based anti-dilution protection, which will equal the Conversion Price; and (ii) the basis for any dividend rights, which will be based on the Conversion Price.',
+						}),
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Safe Price',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the price per share equal to the Valuation Cap divided by the Company Capitalization.',
+						}),
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 500,
+					},
+				}),
+
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '"',
+						}),
+						new TextRun({
+							text: 'Standard Preferred Stock',
+							bold: true,
+						}),
+						new TextRun({
+							text: '" means the shares of a series of Preferred Stock issued to the investors investing new money in the Company in connection with the initial closing of the Equity Financing.',
+						}),
+					],
+					spacing: {
+						after: 400
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 3: Company Representations
 				new Paragraph({
-					text: '3. Company Representations',
-					heading: HeadingLevel.HEADING_1,
+					children: [
+						new TextRun({
+							text: '3. Company Representations',
+							bold: true,
+							italics: true,
+							font: 'Times New Roman',
+						}),
+					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Company Representations (a)
@@ -406,7 +841,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Company Representations (b)
@@ -422,7 +860,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Company Representations (c)
@@ -438,7 +879,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Company Representations (d)
@@ -454,7 +898,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Company Representations (e)
@@ -470,19 +917,30 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 4: Investor Representations
 				new Paragraph({
-					text: '4. Investor Representations',
-					heading: HeadingLevel.HEADING_1,
+					children: [
+						new TextRun({
+							text: '4. Investor Representations',
+							bold: true,
+							italics: true,
+							font: 'Times New Roman',
+						}),
+					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
-				// Investor Representations (a)
 				new Paragraph({
 					children: [
 						new TextRun({
@@ -495,7 +953,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Investor Representations (b)
@@ -511,16 +972,28 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Section 5: Miscellaneous
 				new Paragraph({
-					text: '5. Miscellaneous',
-					heading: HeadingLevel.HEADING_1,
+					children: [
+						new TextRun({
+							text: '5. Miscellaneous',
+							bold: true,
+							italics: true,
+							font: 'Times New Roman',
+						}),
+					],
 					spacing: {
-						after: 400
-					}
+						after: 200,
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (a)
@@ -536,7 +1009,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (b)
@@ -552,7 +1028,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (c)
@@ -568,7 +1047,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (d)
@@ -584,7 +1066,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (e)
@@ -600,7 +1085,10 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
 				}),
 
 				// Miscellaneous (f)
@@ -616,133 +1104,190 @@ export const generatePreMoneyValuationCapAndDiscountSafe = async (state: SafeFor
 					],
 					spacing: {
 						after: 400
-					}
+					},
+					indent: {
+						firstLine: 500,
+					},
+				}),
+
+				// Signature Section
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: '(Signature page follows)',
+							size: 22,
+						}),
+					],
+					alignment: AlignmentType.CENTER,
+					spacing: {
+						after: 400,
+					},
+				}),
+
+				// Add page break before signature section
+				new Paragraph({
+					children: [new PageBreak()],
 				}),
 
 				// Signature Section
 				new Paragraph({
 					text: 'IN WITNESS WHEREOF, the undersigned have caused this instrument to be duly executed and delivered.',
 					spacing: {
-						after: 400
+						after: 400,
 					}
 				}),
 
 				// Company Signature
 				new Paragraph({
-					text: '[COMPANY]',
+					children: [
+						new TextRun({
+							text: state.companyInfo.legalName || '____________________________________',
+							bold: true,
+						}),
+					],
 					spacing: {
-						after: 200
-					}
+						after: 300,
+					},
 				}),
 
 				new Paragraph({
 					text: 'By:',
 					spacing: {
-						after: 200
-					}
+						after: 50,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Name: ${state.companyInfo.authorizedSignatoryName || '[name]'}`
-						})
+							text: `Name: ${
+								state.companyInfo.authorizedSignatoryName ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 50,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Title: ${state.companyInfo.authorizedSignatoryTitle || '[title]'}`
-						})
+							text: `Title: ${
+								state.companyInfo.authorizedSignatoryTitle ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Address: ${state.companyInfo.companyAddress || '[address]'}`
-						})
+							text: `Address: ${
+								state.companyInfo.companyAddress ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Email: ${state.companyInfo.authorizedSignatoryEmail || '[email]'}`
-						})
+							text: `Email: ${
+								state.companyInfo.authorizedSignatoryEmail ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 400
-					}
+						after: 400,
+					},
 				}),
 
 				// Investor Signature
 				new Paragraph({
-					text: 'INVESTOR:',
+					children: [
+						new TextRun({
+							text: 'INVESTOR:',
+							bold: true,
+						}),
+					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				}),
 
 				new Paragraph({
 					text: 'By:',
 					spacing: {
-						after: 200
-					}
+						after: 50,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Name: ${state.investorInfo.authorizedSignatoryName || '[name]'}`
-						})
+							text: `Name: ${
+								state.investorInfo.authorizedSignatoryName ||
+								state.investorInfo.investorLegalName ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 50,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Title: ${state.investorInfo.authorizedSignatoryTitle || '[title]'}`
-						})
+							text: `Title: ${
+								state.investorInfo.authorizedSignatoryTitle ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Address: ${state.investorInfo.investorAddress || '[address]'}`
-						})
+							text: `Address: ${
+								state.investorInfo.investorAddress ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				}),
 
 				new Paragraph({
 					children: [
 						new TextRun({
-							text: `Email: ${state.investorInfo.authorizedSignatoryEmail || '[email]'}`
-						})
+							text: `Email: ${
+								state.investorInfo.authorizedSignatoryEmail ||
+								'_________________'
+							}`,
+						}),
 					],
 					spacing: {
-						after: 200
-					}
+						after: 200,
+					},
 				})
 			]
 		}]
