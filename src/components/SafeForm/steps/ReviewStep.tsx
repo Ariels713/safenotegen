@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
+import { downloadSafePDF, downloadProRataLetterPDF } from '@/utils/pdfUtils'
 import { sendToSlack } from '@/utils/slackUtils'
 import styles from '../SafeForm.module.css'
 import DownloadDropdown from '../DownloadDropdown'
@@ -44,8 +45,11 @@ export default function ReviewStep() {
 	const handleDownloadSafe = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsSafeDownloading(true)
-			// For now, we only support DOCX format
-			await downloadSafeDocument(state)
+			if (format === 'pdf') {
+				await downloadSafePDF(state)
+			} else {
+				await downloadSafeDocument(state)
+			}
 		} catch (error) {
 			console.error('Error downloading SAFE document:', error)
 			// TODO: Add proper error handling UI
@@ -57,8 +61,11 @@ export default function ReviewStep() {
 	const handleDownloadProRata = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsProRataDownloading(true)
-			// For now, we only support DOCX format
-			await downloadProRataLetter(state)
+			if (format === 'pdf') {
+				await downloadProRataLetterPDF(state)
+			} else {
+				await downloadProRataLetter(state)
+			}
 		} catch (error) {
 			console.error('Error downloading Pro Rata letter:', error)
 			// TODO: Add proper error handling UI
