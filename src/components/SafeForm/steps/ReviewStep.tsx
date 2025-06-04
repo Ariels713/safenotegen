@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
 import { downloadSafePDF, downloadProRataLetterPDF } from '@/utils/pdfUtils'
@@ -13,10 +13,12 @@ export default function ReviewStep() {
 	const downloadOptions = getDownloadOptions(state)
 	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
 	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
+	const notificationAttempted = useRef(false)
 
 	useEffect(() => {
 		const sendSlackNotification = async () => {
-			if (!state.slackNotified) {
+			if (!state.slackNotified && !notificationAttempted.current) {
+				notificationAttempted.current = true
 				const success = await sendToSlack(state)
 				if (success) {
 					updateSlackNotified(true)
@@ -25,7 +27,7 @@ export default function ReviewStep() {
 		}
 
 		sendSlackNotification()
-	}, [state, updateSlackNotified])
+	}, [state.slackNotified])
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
