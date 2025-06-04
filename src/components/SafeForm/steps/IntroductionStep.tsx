@@ -17,7 +17,7 @@ export default function IntroductionStep() {
       <div className={`${styles.stepHeader} ${styles.introduction}`}>
         <h2>YC SAFE Agreement Generator</h2>
         <p className={styles.stepDescription}>
-        In just a few clicks, generate a YC SAFE note — the gold standard for
+        In just a few clicks, generate a YC SAFE note – the gold standard for
         startup fundraising – to help with your raise process.
         </p>
       </div>

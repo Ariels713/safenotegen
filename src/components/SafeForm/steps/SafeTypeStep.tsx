@@ -109,7 +109,7 @@ export default function SafeTypeStep() {
 			<div className={styles.stepHeader}>
 				<h2>Select SAFE Type</h2>
 				<p className={styles.stepDescription}>
-					Choose the type of SAFE agreement that best suits your needs.
+					Choose which type of SAFE you would like to generate.
 				</p>
 			</div>
 
