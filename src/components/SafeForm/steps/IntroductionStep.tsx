@@ -17,8 +17,8 @@ export default function IntroductionStep() {
       <div className={`${styles.stepHeader} ${styles.introduction}`}>
         <h2>YC SAFE Agreement Generator</h2>
         <p className={styles.stepDescription}>
-          In just a few clicks, generate a YC SAFE note — the gold standard for
-          startup fundraising – to help with your raise process.
+        In just a few clicks, generate a YC SAFE note – the gold standard for
+        startup fundraising – to help with your raise process.
         </p>
       </div>
 
@@ -32,11 +32,21 @@ export default function IntroductionStep() {
         <p>
           In addition to the Terms of Service and Privacy Policy applicable to
           the Rho site generally (available at{" "}
-          <a href="https://rho.co/policies/terms-of-service">
+          <a 
+            href="https://rho.co/policies/terms-of-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.link}
+          >
             rho.co/policies/terms-of-service
           </a>{" "}
           and{" "}
-          <a href="https://rho.co/policies/privacy-policy">
+          <a 
+            href="https://rho.co/policies/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.link}
+          >
             rho.co/policies/privacy-policy
           </a>
           , respectively), which are incorporated by reference to these terms,

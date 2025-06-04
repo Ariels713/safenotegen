@@ -13,6 +13,7 @@ interface SafeFormContextType {
 	updateProRataLetter: (include: boolean) => void
 	updateCompanyInfo: (info: Partial<CompanyInfo>) => void
 	updateInvestorInfo: (info: Partial<InvestorInfo>) => void
+	updateSlackNotified: (notified: boolean) => void
 }
 
 const initialState: SafeFormState = {
@@ -22,6 +23,7 @@ const initialState: SafeFormState = {
 	proRataLetter: 'yes',
 	companyInfo: {},
 	investorInfo: {},
+	slackNotified: false
 }
 
 type Action =
@@ -33,6 +35,7 @@ type Action =
 	| { type: 'UPDATE_PRO_RATA_LETTER'; payload: boolean }
 	| { type: 'UPDATE_COMPANY_INFO'; payload: Partial<CompanyInfo> }
 	| { type: 'UPDATE_INVESTOR_INFO'; payload: Partial<InvestorInfo> }
+	| { type: 'UPDATE_SLACK_NOTIFIED'; payload: boolean }
 
 const SafeFormContext = createContext<SafeFormContextType | undefined>(undefined)
 
@@ -60,6 +63,8 @@ function safeFormReducer(state: SafeFormState, action: Action): SafeFormState {
 				...state,
 				investorInfo: { ...state.investorInfo, ...action.payload }
 			}
+		case 'UPDATE_SLACK_NOTIFIED':
+			return { ...state, slackNotified: action.payload }
 		default:
 			return state
 	}
@@ -100,6 +105,10 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 		dispatch({ type: 'UPDATE_INVESTOR_INFO', payload: info })
 	}
 
+	const updateSlackNotified = (notified: boolean) => {
+		dispatch({ type: 'UPDATE_SLACK_NOTIFIED', payload: notified })
+	}
+
 	return (
 		<SafeFormContext.Provider
 			value={{
@@ -111,7 +120,8 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 				updateDiscount,
 				updateProRataLetter,
 				updateCompanyInfo,
-				updateInvestorInfo
+				updateInvestorInfo,
+				updateSlackNotified
 			}}
 		>
 			{children}

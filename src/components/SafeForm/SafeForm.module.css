@@ -80,8 +80,8 @@
 	font-weight: 500;
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
-	background-color: #07ebc0;
-	color: #151716;
+	background-color: #00a688;
+	color: #ffffff;
 	border: none;
 	font-size: 12px;
 	font-weight: 600;
@@ -145,8 +145,8 @@
 .navItem.active,
 .navItem.validated,
 .navItem.nextEnabled {
-	background: #07ebc0;
-	color: #151716;
+	background: #00a688;
+	color: #ffffff;
 }
 
 .navItem:not(.disabled):hover {
@@ -187,8 +187,8 @@
 }
 
 .checkbox:checked {
-	background-color: #07ebc0;
-	border-color: #07ebc0;
+	background-color: #00a688;
+	border-color: #00a688;
 }
 
 .checkbox:checked::after {
@@ -395,4 +395,13 @@
 		flex-direction: column;
 		gap: 0.5rem;
 	}
+}
+
+.link {
+	color: #00a688;
+	text-decoration: underline;
+}
+
+.link:hover {
+	opacity: 0.8;
 } 

@@ -1,15 +1,29 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
+import { sendToSlack } from '@/utils/slackUtils'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
-	const { state, updateStep } = useSafeForm()
+	const { state, updateStep, updateSlackNotified } = useSafeForm()
 	const downloadOptions = getDownloadOptions(state)
 	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
 	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
+
+	useEffect(() => {
+		const sendSlackNotification = async () => {
+			if (!state.slackNotified) {
+				const success = await sendToSlack(state)
+				if (success) {
+					updateSlackNotified(true)
+				}
+			}
+		}
+
+		sendSlackNotification()
+	}, [state, updateSlackNotified])
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
@@ -55,7 +69,9 @@ export default function ReviewStep() {
 			<div className={styles.stepHeader}>
 				<h2>Review Information</h2>
 				<p className={styles.stepDescription}>
-					Please review all the information before proceeding.
+				You acknowledge that the Rho SAFE Docs are for general informational purposes
+                only and should not be relied upon absent a review of your specific circumstances by a legal
+                professional and/or other advisors.
 				</p>
 			</div>
 
@@ -77,7 +93,7 @@ export default function ReviewStep() {
 						<span>{state.discount}%</span>
 					</div>
 				)}
-				{state.proRataLetter && (
+				{state.proRataLetter === 'yes' && (
 					<div className={styles.reviewItem}>
 						<span className={styles.label}>Pro Rata Letter:</span>
 						<span>Included</span>
@@ -129,17 +145,11 @@ export default function ReviewStep() {
 				</div>
 				<div className={styles.reviewItem}>
 					<span className={styles.label}>Investment Amount:</span>
-					<span>
-						{state.investorInfo.investmentAmount &&
-							formatCurrency(state.investorInfo.investmentAmount)}
-					</span>
+					<span>{formatCurrency(state.investorInfo.investmentAmount || 0)}</span>
 				</div>
 				<div className={styles.reviewItem}>
 					<span className={styles.label}>Investment Date:</span>
-					<span>
-						{state.investorInfo.investDate &&
-							formatDate(state.investorInfo.investDate)}
-					</span>
+					<span>{formatDate(state.investorInfo.investDate || '')}</span>
 				</div>
 				{state.investorInfo.investorAddress && (
 					<div className={styles.reviewItem}>
@@ -150,21 +160,15 @@ export default function ReviewStep() {
 				{state.investorInfo.entityType !== 'Individual' && (
 					<>
 						<div className={styles.reviewItem}>
-							<span className={styles.label}>
-								Authorized Signatory Name:
-							</span>
+							<span className={styles.label}>Entity Signatory Name:</span>
 							<span>{state.investorInfo.authorizedSignatoryName}</span>
 						</div>
 						<div className={styles.reviewItem}>
-							<span className={styles.label}>
-								Authorized Signatory Title:
-							</span>
+							<span className={styles.label}>Entity Signatory Title:</span>
 							<span>{state.investorInfo.authorizedSignatoryTitle}</span>
 						</div>
 						<div className={styles.reviewItem}>
-							<span className={styles.label}>
-								Authorized Signatory Email:
-							</span>
+							<span className={styles.label}>Entity Signatory Email:</span>
 							<span>{state.investorInfo.authorizedSignatoryEmail}</span>
 						</div>
 					</>
