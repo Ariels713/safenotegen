@@ -59,31 +59,31 @@ export default function ProRataLetter({ state }: ProRataLetterProps) {
 
         <View style={styles.section}>
           <Text>
-            This agreement (this "<Text style={styles.bold}>Agreement</Text>")
+            This agreement (this &ldquo;<Text style={styles.bold}>Agreement</Text>&rdquo;)
             is entered into on or about{" "}
             {state.investorInfo.investDate || "[Date of Safe]"} in connection
             with the purchase by{" "}
-            {state.investorInfo.investorLegalName || "[Investor Name]"} (the "
-            <Text style={styles.bold}>Investor</Text>") of that certain simple
-            agreement for future equity with a "Post-Money Valuation Cap" (the "
-            <Text style={styles.bold}>Investor's Safe</Text>") issued by{" "}
-            {state.companyInfo.legalName || "[Company Name]"} (the "
-            <Text style={styles.bold}>Company</Text>") on or about the date of
-            this Agreement. As a material inducement to the Investor's
+            {state.investorInfo.investorLegalName || "[Investor Name]"} (the &ldquo;
+            <Text style={styles.bold}>Investor</Text>&rdquo;) of that certain simple
+            agreement for future equity with a &ldquo;Post-Money Valuation Cap&rdquo; (the &ldquo;
+            <Text style={styles.bold}>Investor&apos;s Safe</Text>&rdquo;) issued by{" "}
+            {state.companyInfo.legalName || "[Company Name]"} (the &ldquo;
+            <Text style={styles.bold}>Company</Text>&rdquo;) on or about the date of
+            this Agreement. As a material inducement to the Investor&apos;s
             investment, the Company agrees to the provisions set forth in this
             Agreement. Capitalized terms used herein shall have the meanings set
-            forth in the Investor's Safe.
+            forth in the Investor&apos;s Safe.
           </Text>
         </View>
 
         <View style={styles.section}>
           <Text>
             The Investor shall have the right to purchase its pro rata share of
-            Standard Preferred Stock being sold in the Equity Financing (the "
-            <Text style={styles.bold}>Pro Rata Right</Text>"). Pro rata share
+            Standard Preferred Stock being sold in the Equity Financing (the &ldquo;
+            <Text style={styles.bold}>Pro Rata Right</Text>&rdquo;). Pro rata share
             for purposes of this Pro Rata Right is the ratio of (x) the number
             of shares of Capital Stock issued from the conversion of all of the
-            Investor's Safes with a "Post-Money Valuation Cap" to (y) the
+            Investor&apos;s Safes with a &ldquo;Post-Money Valuation Cap&rdquo; to (y) the
             Company Capitalization. The Pro Rata Right described above shall
             automatically terminate upon the earlier of (i) the initial closing
             of the Equity Financing; (ii) immediately prior to the closing of a
@@ -98,7 +98,7 @@ export default function ProRataLetter({ state }: ProRataLetterProps) {
             assigned, by operation of law or otherwise, by Investor without the
             prior written consent of the Company; provided, however, that this
             Agreement and/or the rights contained herein may be assigned without
-            the Company's consent by the Investor to any other entity who
+            the Company&apos;s consent by the Investor to any other entity who
             directly or indirectly, controls, is controlled by or is under
             common control with the Investor, including, without limitation, any
             general partner, managing member, officer or director of the
@@ -132,9 +132,10 @@ export default function ProRataLetter({ state }: ProRataLetterProps) {
             modified the form, except to fill in blanks and bracketed terms. The
             choice of law governing any dispute or claim arising out of or in
             connection with this Agreement shall be consistent with that set
-            forth in the Investor's Safe.
+            forth in the Investor&apos;s Safe.
           </Text>
         </View>
+
         <View style={styles.section}>
           <Text>
             IN WITNESS WHEREOF, the undersigned have caused this Agreement to be
