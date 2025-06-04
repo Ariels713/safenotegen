@@ -856,7 +856,7 @@ export const generatePreMoneyMfnSafe = async (state: SafeFormState): Promise<Blo
 							bold: true,
 						}),
 						new TextRun({
-							text: `All rights and obligations hereunder will be governed by the laws of the State of ${state.companyInfo.governingLawJurisdiction || "_________________"}, without regard to the conflicts of law provisions of such jurisdiction.`,
+							text: `All rights and obligations hereunder will be governed by the laws of the State of ${state.companyInfo.stateOfGovernance || "_________________"}, without regard to the conflicts of law provisions of such jurisdiction.`,
 						}),
 					],
 					spacing: {
