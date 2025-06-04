@@ -13,6 +13,14 @@ export async function POST(request: Request) {
 			)
 		}
 
+		// Check if this submission has already been sent to Slack
+		if (formData.slackNotified) {
+			return NextResponse.json(
+				{ message: 'This submission has already been sent to Slack' },
+				{ status: 200 }
+			)
+		}
+
 		const formatCurrency = (amount: number | undefined) => {
 			if (!amount) return 'N/A'
 			return new Intl.NumberFormat('en-US', {
@@ -97,7 +105,7 @@ export async function POST(request: Request) {
 			throw new Error(`HTTP error! status: ${response.status}`)
 		}
 
-		return NextResponse.json({ success: true })
+		return NextResponse.json({ success: true, slackNotified: true })
 	} catch (error) {
 		console.error('Error sending message to Slack:', error)
 		return NextResponse.json(

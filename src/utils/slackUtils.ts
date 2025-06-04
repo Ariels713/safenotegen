@@ -14,7 +14,8 @@ export const sendToSlack = async (formData: SafeFormState) => {
 			throw new Error(`HTTP error! status: ${response.status}`)
 		}
 
-		return true
+		const data = await response.json()
+		return data.slackNotified
 	} catch (error) {
 		console.error('Error sending message to Slack:', error)
 		return false

@@ -40,6 +40,7 @@ export interface SafeFormState {
 	proRataLetter: string
 	companyInfo: Partial<CompanyInfo>
 	investorInfo: Partial<InvestorInfo>
+	slackNotified: boolean
 }
 
 export interface FormStep {
