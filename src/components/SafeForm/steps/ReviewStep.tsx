@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
+import { sendToSlack } from '@/utils/slackUtils'
 import styles from '../SafeForm.module.css'
 
 export default function ReviewStep() {
@@ -10,6 +11,20 @@ export default function ReviewStep() {
 	const downloadOptions = getDownloadOptions(state)
 	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
 	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
+	const [slackNotificationSent, setSlackNotificationSent] = useState(false)
+
+	useEffect(() => {
+		const sendSlackNotification = async () => {
+			if (!slackNotificationSent) {
+				const success = await sendToSlack(state)
+				if (success) {
+					setSlackNotificationSent(true)
+				}
+			}
+		}
+
+		sendSlackNotification()
+	}, [state, slackNotificationSent])
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
