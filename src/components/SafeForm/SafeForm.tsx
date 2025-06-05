@@ -13,6 +13,62 @@ import { useEffect, useRef } from 'react'
 export default function SafeForm() {
 	const { state, updateStep } = useSafeForm()
 	const navRef = useRef<HTMLDivElement>(null)
+	const formRef = useRef<HTMLDivElement>(null)
+
+	// Send height to parent window
+	useEffect(() => {
+		const sendHeightToParent = () => {
+			if (formRef.current) {
+				// Get the base height from the form
+				const baseHeight = formRef.current.scrollHeight
+				
+				// Adjust height based on current step
+				let stepHeight = baseHeight
+				switch (state.currentStep) {
+					case 1: // Introduction
+						stepHeight = Math.max(baseHeight, 400) // Introduction needs more space
+						break
+					case 2: // Safe Type
+						stepHeight = Math.max(baseHeight, 500) // Safe type selection
+						break
+					case 3: // Company
+						stepHeight = Math.max(baseHeight, 700) // Company info has more fields
+						break
+					case 4: // Investor
+						stepHeight = Math.max(baseHeight, 700) // Investor info has more fields
+						break
+					case 5: // Review
+						stepHeight = Math.max(baseHeight, 800) // Review needs more space for all info
+						break
+					default:
+						stepHeight = baseHeight
+				}
+
+				// Add some padding to ensure no content is cut off
+				const finalHeight = stepHeight + 50
+
+				window.parent.postMessage({ 
+					type: 'resize', 
+					height: finalHeight,
+					step: state.currentStep 
+				}, '*')
+			}
+		}
+
+		// Send initial height
+		sendHeightToParent()
+
+		// Set up resize observer
+		const resizeObserver = new ResizeObserver(sendHeightToParent)
+		if (formRef.current) {
+			resizeObserver.observe(formRef.current)
+		}
+
+		// Cleanup
+		return () => {
+			resizeObserver.disconnect()
+		}
+	}, [state.currentStep, state]) // Re-run when step or form state changes
 
 	useEffect(() => {
 		const scrollToCurrentStep = () => {
@@ -103,7 +159,7 @@ export default function SafeForm() {
 	}
 
 	return (
-		<div className={styles.formContainer}>
+		<div ref={formRef} className={styles.formContainer}>
 			<nav ref={navRef} className={styles.navigation}>
 				{FORM_STEPS.map((step) => {
 					const isCurrentStep = state.currentStep === step.id
