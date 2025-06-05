@@ -41,6 +41,7 @@ export interface SafeFormState {
 	companyInfo: Partial<CompanyInfo>
 	investorInfo: Partial<InvestorInfo>
 	slackNotified: boolean
+	hubspotNotified: boolean
 }
 
 export interface FormStep {

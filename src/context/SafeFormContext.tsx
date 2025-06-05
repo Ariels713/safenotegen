@@ -14,6 +14,7 @@ interface SafeFormContextType {
 	updateCompanyInfo: (info: Partial<CompanyInfo>) => void
 	updateInvestorInfo: (info: Partial<InvestorInfo>) => void
 	updateSlackNotified: (notified: boolean) => void
+	updateHubspotNotified: (notified: boolean) => void
 }
 
 const initialState: SafeFormState = {
@@ -23,7 +24,8 @@ const initialState: SafeFormState = {
 	proRataLetter: 'yes',
 	companyInfo: {},
 	investorInfo: {},
-	slackNotified: false
+	slackNotified: false,
+	hubspotNotified: false
 }
 
 type Action =
@@ -36,6 +38,7 @@ type Action =
 	| { type: 'UPDATE_COMPANY_INFO'; payload: Partial<CompanyInfo> }
 	| { type: 'UPDATE_INVESTOR_INFO'; payload: Partial<InvestorInfo> }
 	| { type: 'UPDATE_SLACK_NOTIFIED'; payload: boolean }
+	| { type: 'UPDATE_HUBSPOT_NOTIFIED'; payload: boolean }
 
 const SafeFormContext = createContext<SafeFormContextType | undefined>(undefined)
 
@@ -65,6 +68,8 @@ function safeFormReducer(state: SafeFormState, action: Action): SafeFormState {
 			}
 		case 'UPDATE_SLACK_NOTIFIED':
 			return { ...state, slackNotified: action.payload }
+		case 'UPDATE_HUBSPOT_NOTIFIED':
+			return { ...state, hubspotNotified: action.payload }
 		default:
 			return state
 	}
@@ -109,6 +114,10 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 		dispatch({ type: 'UPDATE_SLACK_NOTIFIED', payload: notified })
 	}
 
+	const updateHubspotNotified = (notified: boolean) => {
+		dispatch({ type: 'UPDATE_HUBSPOT_NOTIFIED', payload: notified })
+	}
+
 	return (
 		<SafeFormContext.Provider
 			value={{
@@ -121,7 +130,8 @@ export function SafeFormProvider({ children }: { children: ReactNode }) {
 				updateProRataLetter,
 				updateCompanyInfo,
 				updateInvestorInfo,
-				updateSlackNotified
+				updateSlackNotified,
+				updateHubspotNotified
 			}}
 		>
 			{children}
