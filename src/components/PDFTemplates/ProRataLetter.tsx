@@ -5,25 +5,33 @@ const styles = StyleSheet.create({
 	page: {
 		padding: 50,
 		fontSize: 10,
-		lineHeight: 1.5
+		lineHeight: 1.5,
+		fontFamily: 'Times'
 	},
 	title: {
 		fontSize: 12,
 		fontWeight: 'bold',
 		textAlign: 'center',
-		marginBottom: 20
+		marginBottom: 20,
+		fontFamily: 'Times'
 	},
 	companyName: {
 		fontSize: 12,
 		fontWeight: 'bold',
 		textAlign: 'center',
-		marginBottom: 10
+		marginBottom: 10,
+		fontFamily: 'Times'
 	},
 	section: {
 		marginBottom: 10
 	},
 	bold: {
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		fontFamily: 'Times'
+	},
+	italic: {
+		fontStyle: 'italic',
+		fontFamily: 'Times'
 	},
 	link: {
 		color: '#00a688',

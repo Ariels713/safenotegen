@@ -4,6 +4,7 @@ import { DocumentProps } from '@react-pdf/renderer'
 import { getSafeTemplate } from '@/components/PDFTemplates/SafeTemplateSelector'
 import { ReactElement } from 'react'
 import ProRataLetter from '@/components/PDFTemplates/ProRataLetter'
+import './fonts' // Import font registration
 
 export async function generateSafePDF(state: SafeFormState): Promise<Uint8Array> {
 	const template = getSafeTemplate(state) as ReactElement<DocumentProps>
