@@ -35,10 +35,10 @@ export default function SafeForm() {
 						stepHeight = Math.max(baseHeight, 700) // Company info has more fields
 						break
 					case 4: // Investor
-						stepHeight = Math.max(baseHeight, 700) // Investor info has more fields
+						stepHeight = Math.max(baseHeight, 930) // Investor info has more fields
 						break
 					case 5: // Review
-						stepHeight = Math.max(baseHeight, 800) // Review needs more space for all info
+						stepHeight = Math.max(baseHeight, 1300) // Review needs more space for all info
 						break
 					default:
 						stepHeight = baseHeight
