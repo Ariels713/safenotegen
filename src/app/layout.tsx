@@ -1,6 +1,9 @@
+'use client'
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { useEffect } from 'react'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +25,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    // Function to send height to parent
+    const sendHeight = () => {
+      const height = document.documentElement.scrollHeight
+      window.parent.postMessage({ type: 'resize', height }, '*')
+    }
+
+    // Send height on load and resize
+    sendHeight()
+    window.addEventListener('resize', sendHeight)
+
+    // Create a MutationObserver to watch for content changes
+    const observer = new MutationObserver(sendHeight)
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true
+    })
+
+    return () => {
+      window.removeEventListener('resize', sendHeight)
+      observer.disconnect()
+    }
+  }, [])
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
