@@ -1,9 +1,19 @@
 import { useEffect } from 'react'
 
+// Define types for the debounce function
+type DebouncedFunction<T extends (...args: unknown[]) => unknown> = {
+  (...args: Parameters<T>): void
+  cancel: () => void
+}
+
 // Debounce function to prevent too frequent updates
-const debounce = (func: Function, wait: number) => {
+const debounce = <T extends (...args: unknown[]) => unknown>(
+  func: T,
+  wait: number
+): DebouncedFunction<T> => {
   let timeout: NodeJS.Timeout
-  return function executedFunction(...args: any[]) {
+
+  const debouncedFn = (...args: Parameters<T>) => {
     const later = () => {
       clearTimeout(timeout)
       func(...args)
@@ -11,10 +21,16 @@ const debounce = (func: Function, wait: number) => {
     clearTimeout(timeout)
     timeout = setTimeout(later, wait)
   }
+
+  debouncedFn.cancel = () => {
+    clearTimeout(timeout)
+  }
+
+  return debouncedFn
 }
 
 // Function to send height to parent window
-export const sendHeightToParent = () => {
+export const sendHeightToParent = (): void => {
   if (typeof window !== 'undefined') {
     // Get the actual height of the content
     const height = Math.ceil(document.documentElement.scrollHeight)
@@ -35,12 +51,12 @@ export const sendHeightToParent = () => {
 const debouncedSendHeight = debounce(sendHeightToParent, 100)
 
 // Custom hook to handle iframe resizing
-export const useIframeResize = () => {
+export const useIframeResize = (): void => {
   useEffect(() => {
     let lastHeight = 0
 
     // Function to check if height has actually changed
-    const checkAndSendHeight = () => {
+    const checkAndSendHeight = (): void => {
       const currentHeight = Math.ceil(document.documentElement.scrollHeight)
       if (currentHeight !== lastHeight) {
         lastHeight = currentHeight
@@ -60,13 +76,13 @@ export const useIframeResize = () => {
     resizeObserver.observe(document.body)
 
     // Also handle window resize events
-    const handleResize = () => {
+    const handleResize = (): void => {
       checkAndSendHeight()
     }
     window.addEventListener('resize', handleResize)
 
     // Listen for messages from parent
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = (event: MessageEvent): void => {
       if (event.data.type === 'REQUEST_HEIGHT') {
         checkAndSendHeight()
       }
@@ -78,6 +94,7 @@ export const useIframeResize = () => {
       resizeObserver.disconnect()
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('message', handleMessage)
+      debouncedSendHeight.cancel()
     }
   }, [])
 } 
