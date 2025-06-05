@@ -5,29 +5,38 @@ import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
 import { downloadSafePDF, downloadProRataLetterPDF } from '@/utils/pdfUtils'
 import { sendToSlack } from '@/utils/slackUtils'
+import { sendToHubspot } from '@/utils/hubspotUtils'
 import styles from '../SafeForm.module.css'
 import DownloadDropdown from '../DownloadDropdown'
 
 export default function ReviewStep() {
-	const { state, updateStep, updateSlackNotified } = useSafeForm()
+	const { state, updateStep, updateSlackNotified, updateHubspotNotified } = useSafeForm()
 	const downloadOptions = getDownloadOptions(state)
 	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
 	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
 	const notificationAttempted = useRef(false)
 
 	useEffect(() => {
-		const sendSlackNotification = async () => {
-			if (!state.slackNotified && !notificationAttempted.current) {
+		const sendNotifications = async () => {
+			if (!notificationAttempted.current) {
 				notificationAttempted.current = true
-				const success = await sendToSlack(state)
-				if (success) {
+				
+				// Send to Slack
+				const slackSuccess = await sendToSlack(state)
+				if (slackSuccess) {
 					updateSlackNotified(true)
+				}
+
+				// Send to HubSpot
+				const hubspotSuccess = await sendToHubspot(state)
+				if (hubspotSuccess) {
+					updateHubspotNotified(true)
 				}
 			}
 		}
 
-		sendSlackNotification()
-	}, [state.slackNotified])
+		sendNotifications()
+	}, [state.slackNotified, state.hubspotNotified])
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
