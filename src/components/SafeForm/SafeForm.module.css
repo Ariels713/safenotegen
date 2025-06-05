@@ -101,6 +101,11 @@
 	padding: 2rem;
 	border: 1px solid #e0e0e0;
 	border-radius: 8px;
+	min-height: 530px;
+
+	@media (max-width: 500px) {
+		height: 100dvh;
+	}
 }
 
 .formStep {
@@ -109,6 +114,12 @@
 
 .formStep.active {
 	display: block;
+
+	@media (max-width: 500px) {
+		display: flex;
+		flex-direction: column;
+		height: calc(100% - 80px);
+	}
 }
 
 .navigation {
@@ -301,6 +312,12 @@
 	& p {
 		font-size: 12px;
 	}
+
+	@media (max-width: 500px) {
+		max-height: initial;
+		flex: 1;
+		margin-block: 0; 
+	}
 }
 
 .disclaimer h3 {
@@ -330,6 +347,10 @@
 	gap: 1rem;
 	justify-content: flex-end;
 	margin-top: 2rem;
+
+	@media (max-width: 500px) {
+		flex: 1; 
+	}
 }
 
 .secondaryButton {
