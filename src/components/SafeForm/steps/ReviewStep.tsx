@@ -1,20 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSafeForm } from '@/context/SafeFormContext'
 import { getDownloadOptions, downloadSafeDocument, downloadProRataLetter } from '@/utils/documentUtils'
+import { downloadSafePDF, downloadProRataLetterPDF } from '@/utils/pdfUtils'
 import { sendToSlack } from '@/utils/slackUtils'
 import styles from '../SafeForm.module.css'
+import DownloadDropdown from '../DownloadDropdown'
 
 export default function ReviewStep() {
 	const { state, updateStep, updateSlackNotified } = useSafeForm()
 	const downloadOptions = getDownloadOptions(state)
 	const [isSafeDownloading, setIsSafeDownloading] = useState(false)
 	const [isProRataDownloading, setIsProRataDownloading] = useState(false)
+	const notificationAttempted = useRef(false)
 
 	useEffect(() => {
 		const sendSlackNotification = async () => {
-			if (!state.slackNotified) {
+			if (!state.slackNotified && !notificationAttempted.current) {
+				notificationAttempted.current = true
 				const success = await sendToSlack(state)
 				if (success) {
 					updateSlackNotified(true)
@@ -23,7 +27,7 @@ export default function ReviewStep() {
 		}
 
 		sendSlackNotification()
-	}, [state, updateSlackNotified])
+	}, [state.slackNotified])
 
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat('en-US', {
@@ -40,10 +44,14 @@ export default function ReviewStep() {
 		})
 	}
 
-	const handleDownloadSafe = async () => {
+	const handleDownloadSafe = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsSafeDownloading(true)
-			await downloadSafeDocument(state)
+			if (format === 'pdf') {
+				await downloadSafePDF(state)
+			} else {
+				await downloadSafeDocument(state)
+			}
 		} catch (error) {
 			console.error('Error downloading SAFE document:', error)
 			// TODO: Add proper error handling UI
@@ -52,10 +60,14 @@ export default function ReviewStep() {
 		}
 	}
 
-	const handleDownloadProRata = async () => {
+	const handleDownloadProRata = async (format: 'docx' | 'pdf') => {
 		try {
 			setIsProRataDownloading(true)
-			await downloadProRataLetter(state)
+			if (format === 'pdf') {
+				await downloadProRataLetterPDF(state)
+			} else {
+				await downloadProRataLetter(state)
+			}
 		} catch (error) {
 			console.error('Error downloading Pro Rata letter:', error)
 			// TODO: Add proper error handling UI
@@ -190,22 +202,18 @@ export default function ReviewStep() {
 					Back
 				</button>
 				{downloadOptions.showSafeDownload && (
-					<button
-						className={styles.button}
-						onClick={handleDownloadSafe}
-						disabled={isSafeDownloading || isProRataDownloading}
-					>
-						{isSafeDownloading ? 'Generating...' : 'Download SAFE'}
-					</button>
+					<DownloadDropdown
+						label="Download SAFE"
+						onDownload={handleDownloadSafe}
+						isDownloading={isSafeDownloading}
+					/>
 				)}
 				{downloadOptions.showProRataDownload && (
-					<button
-						className={styles.button}
-						onClick={handleDownloadProRata}
-						disabled={isSafeDownloading || isProRataDownloading}
-					>
-						{isProRataDownloading ? 'Generating...' : 'Download Pro Rata Letter'}
-					</button>
+					<DownloadDropdown
+						label="Download Pro Rata Letter"
+						onDownload={handleDownloadProRata}
+						isDownloading={isProRataDownloading}
+					/>
 				)}
 			</div>
 		</>
