@@ -4,7 +4,6 @@ export const sendToHubspot = async (formData: SafeFormState) => {
   try {
     // Check if already notified
     if (formData.hubspotNotified) {
-      console.log('Already sent to HubSpot')
       return true
     }
 
@@ -32,12 +31,9 @@ export const sendToHubspot = async (formData: SafeFormState) => {
       fields,
       context: {
         pageUri: window.location.href,
-        pageName: document.title
+        pageName: 'Free SAFE Note Generator | Save Time Fundraising & Legal Fees'
       }
     }
-
-    // Log for debugging
-    console.log('Sending to Hubspot:', hubspotData)
 
     // Send to Hubspot
     const response = await fetch('https://api.hsforms.com/submissions/v3/integration/submit/39998325/e1cf0502-7fcb-4259-baee-c824713c2bed', {
