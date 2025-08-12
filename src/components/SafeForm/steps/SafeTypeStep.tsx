@@ -177,7 +177,7 @@ export default function SafeTypeStep() {
 					<select
 						id="proRataLetter"
 						className={styles.select}
-						value={state.proRataLetter ? 'include' : 'exclude'}
+						value={state.proRataLetter === 'yes' ? 'include' : 'exclude'}
 						onChange={(e) => updateProRataLetter(e.target.value === 'include')}
 						required
 					>

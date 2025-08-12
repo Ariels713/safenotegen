@@ -27,18 +27,18 @@ const SAFE_TYPES = {
 	'Post-Money SAFE - Valuation Cap Only': {
 		safeType: [
 			{ id: 'valuation-cap-input', type: 'currency', required: true },
-			{ id: 'pro-rata-select', type: 'select', required: true }
+			{ id: 'pro-rata-select', type: 'select', required: false }
 		]
 	},
 	'Post-Money SAFE - Discount Only': {
 		safeType: [
 			{ id: 'discount-input', type: 'percentage', required: true },
-			{ id: 'pro-rata-select', type: 'select', required: true }
+			{ id: 'pro-rata-select', type: 'select', required: false }
 		]
 	},
 	'Post-Money SAFE - MFN (Most Favored Nation)': {
 		safeType: [
-			{ id: 'pro-rata-select', type: 'select', required: true }
+			{ id: 'pro-rata-select', type: 'select', required: false }
 		]
 	},
 	'Pre-Money SAFE - Valuation Cap Only': {
